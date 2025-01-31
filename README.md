@@ -1,2 +1,1 @@
 # odoo-assignment
-# Practice-Assignment
