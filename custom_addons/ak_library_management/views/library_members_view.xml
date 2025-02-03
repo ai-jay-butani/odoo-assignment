@@ -4,10 +4,11 @@
             <field name="name">library.members.list.view</field>
             <field name="model">library.members</field>
             <field name="arch" type="xml">
-                <list string="Members">
+                <list string="Members" editable="bottom" open_form_view="True">
                     <field name="name"/>
                     <field name="email"/>
                     <field name="phone" />
+                    <field name="membership_date" />
                 </list>
             </field>
     </record>
@@ -51,5 +52,3 @@
     <menuitem id="library_management_members_menu" name="Members" parent="menu_library" sequence="10"/>
     <menuitem id="library_member_menu" name="Members" parent="library_management_members_menu" action="action_library_members_list" sequence="10"/>
 </odoo>
-
-

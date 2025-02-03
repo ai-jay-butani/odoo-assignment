@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 {
     'name': 'Library Management',
     'version': '18.0.1.0.0',
@@ -11,7 +12,8 @@
         'views/library_book_view.xml',
         'views/library_members_view.xml',
         'views/library_book_tags_view.xml',
-        'views/library_book_category_view.xml'
+        'views/library_book_category_view.xml',
+        'views/library_book_location_view.xml'
     ],
     'depends':['base','web'],
     'application': True,

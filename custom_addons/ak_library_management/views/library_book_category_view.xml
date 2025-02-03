@@ -6,7 +6,6 @@
             <field name="arch" type="xml">
                 <list string="Books Category">
                     <field name="name"/>
-                    <field name="tag_ids"/>
                 </list>
             </field>
     </record>

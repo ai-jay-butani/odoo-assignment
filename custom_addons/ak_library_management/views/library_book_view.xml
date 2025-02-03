@@ -13,6 +13,7 @@
                     <field name="tags_ids" widget="many2many_tags"/>
                     <field name="publication_date" />
                     <field name="description" />
+                    <field name="library_ids"/>
                 </list>
             </field>
     </record>
@@ -34,9 +35,10 @@
                                 <field name="author"/>
                                 <field name="isbn" />
                                 <field name="category_ids"/>
+                                <field name="tags_ids" widget="many2many_tags"/>
                             </group>
                             <group>
-                                <field name="tags_ids" widget="many2many_tags"/>
+                                <field name="library_ids"/>
                                 <field name="publication_date" />
                                 <field name="state" />
                                 <field name="description" />

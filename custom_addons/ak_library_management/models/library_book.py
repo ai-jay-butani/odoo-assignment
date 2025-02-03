@@ -15,3 +15,4 @@ class Book(models.Model):
     description = fields.Text(string='Book Summary')
     category_ids = fields.Many2one('library.book.category',string='Category')
     tags_ids = fields.Many2many('library.book.tags',string='Tags', related='category_ids.tag_ids')
+    library_ids = fields.Many2one('library.book.location', string='Location')
