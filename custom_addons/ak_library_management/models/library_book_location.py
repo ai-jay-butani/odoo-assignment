@@ -1,7 +1,12 @@
 #-*- coding: utf-8 -*-
 from odoo import models,fields
 
+
 class BookLocation(models.Model):
+    """
+    We can add Library name, location, capacity of library, and note
+    We can also add book details in this model using one2many relation.
+    """
     _name = "library.book.location"
     _description = "library management"
 

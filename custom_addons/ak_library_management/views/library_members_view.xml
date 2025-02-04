@@ -39,7 +39,7 @@
     <record id="action_library_members_list" model="ir.actions.act_window">
        <field name="name">Members</field>
        <field name="res_model">library.members</field>
-       <field name="view_mode">list</field>
+       <field name="view_mode">list,form</field>
        <field name="view_id" ref="library_members_view_list"/>
        <field name="help" type="html">
            <p class="o_view_nocontent_smiling_face">

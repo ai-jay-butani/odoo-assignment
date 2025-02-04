@@ -3,6 +3,11 @@ from odoo import models,fields
 
 
 class Book(models.Model):
+    """
+    one library_book model is create and add some fields.
+    We can add book title, author, reference number, publication date, state, description and
+    add some fields has relation with other model.
+    """
     _name = 'library.book'
     _description = 'library management'
 

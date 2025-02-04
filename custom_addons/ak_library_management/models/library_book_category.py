@@ -3,6 +3,9 @@ from odoo import models,fields
 
 
 class BookCategory(models.Model):
+    """
+    We can add book category and also give tags to that category.
+    """
     _name = 'library.book.category'
     _description = 'library management'
 
