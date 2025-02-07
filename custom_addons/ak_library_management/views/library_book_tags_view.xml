@@ -18,7 +18,7 @@
                 <form string="Books Tags">
                     <sheet>
                         <group>
-                            <field name="name"/>
+                            <field name="name" class="tags"/>
                         </group>
                     </sheet>
                 </form>

@@ -2,7 +2,7 @@
 from odoo import models,fields
 
 
-class Members(models.Model):
+class LibraryMembers(models.Model):
     """
     We can add library members name, email, phone no and membership date.
     """

@@ -2,10 +2,10 @@
 from odoo import models,fields
 
 
-class BookLocation(models.Model):
+class LibraryBookLocation(models.Model):
     """
     We can add Library name, location, capacity of library, and note
-    We can also add book details in this model using one2many relation.
+    In Library Book Location model we can select books from product menu and don't add the new book.
     """
     _name = "library.book.location"
     _description = "library management"
@@ -14,4 +14,4 @@ class BookLocation(models.Model):
     location = fields.Char(string="Library Location")
     capacity = fields.Integer(string="Capacity")
     notes = fields.Text(string="Note")
-    book_ids = fields.One2many(comodel_name="library.book",inverse_name='library_ids',string="Book_id")
+    book_ids = fields.Many2many(comodel_name="product.template",domain=[('is_library_book','=','true')],string="Book_id")

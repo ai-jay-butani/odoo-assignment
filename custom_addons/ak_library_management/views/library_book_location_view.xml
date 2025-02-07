@@ -14,7 +14,7 @@
                         </group>
                         <notebook>
                             <page string="Books">
-                                <field name="book_ids"/>
+                                <field name="book_ids" options="{'create': false}"/>
                             </page>
                         </notebook>
                     </sheet>

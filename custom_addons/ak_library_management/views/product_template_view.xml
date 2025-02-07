@@ -1,0 +1,54 @@
+<odoo>
+    <!--inherit product.template list view-->
+    <record id="product_template_list_view_inherit_lms" model="ir.ui.view">
+        <field name="name">product.template.list.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_variant_count']" position="before">
+                    <field name="is_library_book"/>
+                    <field name="author"/>
+                    <field name="publisher"/>
+                    <field name="barcode" column_invisible="false"/>
+                    <field name="edition"/>
+                    <field name="published_date"/>
+                    <field name="pages"/>
+                    <field name="available"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--inherit product.template form view-->
+    <record id="product_template_form_view_inherit_lms" model="ir.ui.view">
+        <field name="name">product.template.form.view</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='standard_price']" position="attributes">
+                <attribute name="readonly">sale_ok == True</attribute>
+            </xpath>
+            <xpath expr="//page[@name='inventory']" position="after">
+                <page name="book details" string="Book Details">
+                    <group name="book details">
+                       <group>
+                             <field name="is_library_book"/>
+                             <field name="author" required="sale_ok == True"/>
+                             <field name="publisher" required="sale_ok == True"/>
+                       </group>
+                        <group>
+                            <field name="edition" required="sale_ok == True"/>
+                            <field name="published_date" required="sale_ok == True"/>
+                            <field name="pages"/>
+                            <field name="available"/>
+                       </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+
+    <!--inherit menu-->
+    <menuitem id="product_template_books_menu" name="Products"
+              parent="menu_library" action="product.product_template_action"/>
+</odoo>

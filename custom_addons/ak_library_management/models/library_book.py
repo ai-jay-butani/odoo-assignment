@@ -2,7 +2,7 @@
 from odoo import models,fields
 
 
-class Book(models.Model):
+class LibraryBook(models.Model):
     """
     one library_book model is create and add some fields.
     We can add book title, author, reference number, publication date, state, description and
@@ -18,6 +18,6 @@ class Book(models.Model):
     state = fields.Selection(selection= [('available','Available'),('borrowed','Borrowed')],
                              string = 'Book Availability')
     description = fields.Text(string='Book Summary')
-    category_ids = fields.Many2one('library.book.category',string='Category')
-    tags_ids = fields.Many2many('library.book.tags',string='Tags', related='category_ids.tag_ids')
-    library_ids = fields.Many2one('library.book.location', string='Location')
+    category_ids = fields.Many2one(comodel_name='library.book.category',string='Category')
+    tags_ids = fields.Many2many(comodel_name='library.book.tags',string='Tags', related='category_ids.tag_ids')
+    library_ids = fields.Many2one(comodel_name='library.book.location', string='Location')

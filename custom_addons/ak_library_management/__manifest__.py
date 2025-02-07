@@ -13,9 +13,11 @@
         'views/library_members_view.xml',
         'views/library_book_tags_view.xml',
         'views/library_book_category_view.xml',
-        'views/library_book_location_view.xml'
+        'views/library_book_location_view.xml',
+        'views/product_template_view.xml',
+        'views/product_template_barcode_view.xml'
     ],
-    'depends':['base','web'],
+    'depends':['product'],
     'application': True,
     'license': 'LGPL-3',
 }

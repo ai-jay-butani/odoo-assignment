@@ -2,7 +2,7 @@
 from odoo import models,fields
 
 
-class BookCategory(models.Model):
+class LibraryBookCategory(models.Model):
     """
     We can add book category and also give tags to that category.
     """
@@ -10,4 +10,4 @@ class BookCategory(models.Model):
     _description = 'library management'
 
     name = fields.Char(string='Book Category', required=True)
-    tag_ids = fields.Many2many('library.book.tags', string='Tags')
+    tag_ids = fields.Many2many(comodel_name='library.book.tags', string='Tags')

@@ -2,7 +2,7 @@
 from odoo import models,fields
 
 
-class BookTags(models.Model):
+class LibraryBookTags(models.Model):
     """
     We can add book tags and this tags is use in the category model.
     """
