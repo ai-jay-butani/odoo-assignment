@@ -11,7 +11,7 @@ class LibraryBook(models.Model):
     _name = 'library.book'
     _description = 'library management'
 
-    name = fields.Char(string='Book Title')
+    name = fields.Char(string='Book Title', required=True)
     author = fields.Char(string='Author Name')
     isbn = fields.Char(string='ISBN')
     publication_date = fields.Date(string='Date of Publication')

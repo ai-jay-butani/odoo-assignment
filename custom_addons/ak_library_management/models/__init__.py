@@ -1,2 +1,7 @@
 # -*- coding: utf-8 -*-
-from . import library_book,library_members,library_book_tags,library_book_category,library_book_location,product_template
+from . import library_book
+from . import library_members
+from . import library_book_tags
+from . import library_book_category
+from . import library_book_location
+from . import product_template

@@ -14,10 +14,15 @@ class LibraryBookLocation(models.Model):
     location = fields.Char(string="Library Location")
     capacity = fields.Integer(string="Capacity")
     notes = fields.Text(string="Note")
-    book_ids = fields.Many2many(comodel_name="product.template",domain=[('is_library_book','=','true')],string="Book_id")
+    book_ids = fields.Many2many(comodel_name="product.template",
+                                domain=[('is_library_book','=','true')],string="Book Id")
     count_borrowed_book = fields.Integer(compute="_compute_count_borrowed_book")
 
     def action_borrowed_book(self):
+        """
+        When I click Book Borrowed smart button then this method is call
+        and return action
+        """
         return {
             'name': 'Borrowed Books',
             'type': 'ir.actions.act_window',
@@ -28,5 +33,8 @@ class LibraryBookLocation(models.Model):
 
     @api.depends("book_ids")
     def _compute_count_borrowed_book(self):
+        """
+        Count the borrowed books from libraries books
+        """
         book_borrowed_list = [record for record in self.book_ids if record.status == 'borrowed']
         self.count_borrowed_book = len(book_borrowed_list)

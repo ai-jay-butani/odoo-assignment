@@ -54,6 +54,6 @@
        </field>
     </record>
 
-    <!--menu-->
+    <!--libraries menu-->
     <menuitem id="library_books_location_menu" name="Libraries" parent="menu_library" action="action_library_book_location_list"/>
 </odoo>

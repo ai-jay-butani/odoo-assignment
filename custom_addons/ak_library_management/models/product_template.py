@@ -24,10 +24,17 @@ class ProductTemplate(models.Model):
     ],string="Status")
 
     def mark_as_available(self):
+        """
+        If status is borrowed then mark as available button is display
+        and when we click that button then this method is call
+        """
         self.status = "available"
         return self.status
 
     def mark_as_borrowed(self):
+        """
+        If status is available then mark as borrowed button is display
+        and when we click that button then this method is call
+        """
         self.status = "borrowed"
         return self.status
-
