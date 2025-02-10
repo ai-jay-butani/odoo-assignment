@@ -8,7 +8,7 @@ class LibraryBookLocation(models.Model):
     In Library Book Location model we can select books from product menu and don't add the new book.
     """
     _name = "library.book.location"
-    _description = "library management"
+    _description = "library book location"
 
     name = fields.Char(string="Library Name",required=True)
     location = fields.Char(string="Library Location")

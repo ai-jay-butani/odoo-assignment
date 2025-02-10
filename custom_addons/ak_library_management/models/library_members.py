@@ -7,7 +7,7 @@ class LibraryMembers(models.Model):
     We can add library members name, email, phone no and membership date.
     """
     _name = 'library.members'
-    _description = 'library management'
+    _description = 'library members'
 
     name = fields.Char(string='Member Name',required=True)
     email = fields.Char(string='Email ID')

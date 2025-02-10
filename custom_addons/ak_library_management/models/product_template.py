@@ -29,7 +29,6 @@ class ProductTemplate(models.Model):
         and when we click that button then this method is call
         """
         self.status = "available"
-        return self.status
 
     def mark_as_borrowed(self):
         """
@@ -37,4 +36,3 @@ class ProductTemplate(models.Model):
         and when we click that button then this method is call
         """
         self.status = "borrowed"
-        return self.status

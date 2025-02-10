@@ -9,7 +9,7 @@ class LibraryBook(models.Model):
     add some fields has relation with other model.
     """
     _name = 'library.book'
-    _description = 'library management'
+    _description = 'library book'
 
     name = fields.Char(string='Book Title', required=True)
     author = fields.Char(string='Author Name')
@@ -18,7 +18,7 @@ class LibraryBook(models.Model):
     state = fields.Selection(selection= [('available','Available'),('borrowed','Borrowed')],
                              string = 'Book Availability')
     description = fields.Text(string='Book Summary')
-    category_ids = fields.Many2one(comodel_name='library.book.category',string='Category')
+    category_id = fields.Many2one(comodel_name='library.book.category',string='Category')
     tags_ids = fields.Many2many(comodel_name='library.book.tags',string='Tags',
-                                related='category_ids.tag_ids')
-    library_ids = fields.Many2one(comodel_name='library.book.location', string='Location')
+                                related='category_id.tag_ids')
+    library_id = fields.Many2one(comodel_name='library.book.location', string='Location')
