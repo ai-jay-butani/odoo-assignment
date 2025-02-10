@@ -15,9 +15,10 @@
         'views/library_book_category_view.xml',
         'views/library_book_location_view.xml',
         'views/product_template_view.xml',
-        'views/product_template_barcode_view.xml'
+        'views/product_template_barcode_view.xml',
+        'views/sale_menus.xml'
     ],
-    'depends':['product'],
+    'depends':['sale_management','product'],
     'application': True,
     'license': 'LGPL-3',
 }
