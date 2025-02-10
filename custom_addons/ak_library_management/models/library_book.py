@@ -19,5 +19,6 @@ class LibraryBook(models.Model):
                              string = 'Book Availability')
     description = fields.Text(string='Book Summary')
     category_ids = fields.Many2one(comodel_name='library.book.category',string='Category')
-    tags_ids = fields.Many2many(comodel_name='library.book.tags',string='Tags', related='category_ids.tag_ids')
+    tags_ids = fields.Many2many(comodel_name='library.book.tags',string='Tags',
+                                related='category_ids.tag_ids')
     library_ids = fields.Many2one(comodel_name='library.book.location', string='Location')
