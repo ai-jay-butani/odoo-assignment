@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models,fields
+from odoo import models,fields,api
 
 
 class LibraryMembers(models.Model):
@@ -13,3 +13,13 @@ class LibraryMembers(models.Model):
     email = fields.Char(string='Email ID')
     phone = fields.Char(string='Contact Number')
     membership_date = fields.Date(string='Membership Start Date')
+    membership_no = fields.Char(string="Member ID",default="New")
+
+    @api.model_create_multi
+    def create(self, vals):
+        """
+        inherit the create method and update sequence number.
+        """
+        res = super().create(vals)
+        res.membership_no = self.env["ir.sequence"].next_by_code('library.members')
+        return res

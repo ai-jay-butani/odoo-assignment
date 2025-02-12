@@ -1,0 +1,15 @@
+<odoo>
+    <record id="sequence_library_book"  model="ir.sequence">
+        <field name="name">Library Book Reference</field>
+        <field name="code">product.template</field>
+        <field name="prefix">BOOK-%(year)s-</field>
+        <field name="padding">4</field>
+    </record>
+
+    <record id="sequence_library_member"  model="ir.sequence">
+        <field name="name">Library Member Reference</field>
+        <field name="code">library.members</field>
+        <field name="prefix">MEM-%(year)s-%(month)s-</field>
+        <field name="padding">4</field>
+    </record>
+</odoo>

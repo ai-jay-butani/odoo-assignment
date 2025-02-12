@@ -4,7 +4,7 @@
             <field name="name">library.members.list.view</field>
             <field name="model">library.members</field>
             <field name="arch" type="xml">
-                <list string="Members" editable="bottom" open_form_view="True">
+                <list string="Members">
                     <field name="name"/>
                     <field name="email"/>
                     <field name="phone" />
@@ -22,6 +22,9 @@
                     <sheet>
                         <group>
                             <group>
+                                <h1>
+                                    <field name="membership_no" readonly="True"/>
+                                </h1>
                                 <field name="name"/>
                                 <field name="email"/>
                             </group>

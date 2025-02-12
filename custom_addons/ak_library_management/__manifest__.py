@@ -17,7 +17,8 @@
         'views/product_template_views.xml',
         'views/product_template_barcode_views.xml',
         'views/sale_menus.xml',
-        'views/library_bulk_book_views.xml'
+        'views/library_bulk_book_views.xml',
+        'data/ir_sequence_data.xml'
     ],
     'depends':['sale_management','product'],
     'application': True,

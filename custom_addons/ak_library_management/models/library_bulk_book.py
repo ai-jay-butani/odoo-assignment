@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from itertools import product
-
 from odoo import models,fields,api
 
 
@@ -74,12 +72,11 @@ class LibraryBulkBook(models.TransientModel):
                 'res_model': 'product.template',
                 'res_id': product_id.id,
             }
-        else:
-            return {
-                'name': 'Product',
-                'type': 'ir.actions.act_window',
-                'view_mode': 'list,form',
-                'res_model': 'product.template',
-                'domain': [('name', 'in', self.book_names.split(','))],
-            }
+        return {
+            'name': 'Product',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'list,form',
+            'res_model': 'product.template',
+            'domain': [('name', 'in', self.book_names.split(','))],
+        }
 
