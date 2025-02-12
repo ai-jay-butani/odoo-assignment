@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models,fields
+from odoo import models,fields,api
 
 
 class ProductTemplate(models.Model):
@@ -36,3 +36,17 @@ class ProductTemplate(models.Model):
         and when we click that button then this method is call
         """
         self.status = "borrowed"
+
+    @api.model_create_multi
+    def create(self,vals):
+        print("before",self)
+        res = super().create(vals)
+        print("after",self)
+        print(res)
+        self.env['ir.sequence'].create({
+            'name': "Library book reference",
+            'code': "product.template",
+            'prefix': "BOOK-"
+        })
+        res.default_code = self.env["ir.sequence"].next_by_code('product.template')
+        return res

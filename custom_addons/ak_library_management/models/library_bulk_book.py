@@ -66,14 +66,13 @@ class LibraryBulkBook(models.TransientModel):
         and return the list of that products.
         """
         if self.count_created_product == 1:
-            product_id = self.env["product.template"].search([("name", "=", self.book_names.split(','))])
+            product_id = self.env["product.template"].search([("name", "=", self.book_names)])
             return {
                 'name': 'Product',
                 'type': 'ir.actions.act_window',
                 'view_mode': 'form',
                 'res_model': 'product.template',
                 'res_id': product_id.id,
-                'domain': [('name', 'in', self.book_names.split(','))],
             }
         else:
             return {
