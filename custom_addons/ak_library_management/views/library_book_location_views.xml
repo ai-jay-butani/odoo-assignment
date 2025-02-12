@@ -19,12 +19,12 @@
             <field name="model">library.book.location</field>
             <field name="arch" type="xml">
                 <form string="Books Location">
-                    <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button" icon="fa-book" type="object" name="action_borrowed_book">
-                            <field string="Books Borrowed" name="count_borrowed_book" widget="statinfo"/>
-                        </button>
-                    </div>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" icon="fa-book" type="object" name="action_borrowed_book">
+                                <field string="Books Borrowed" name="count_borrowed_book" widget="statinfo"/>
+                            </button>
+                        </div>
                         <group>
                             <field name="name"/>
                             <field name="location"/>

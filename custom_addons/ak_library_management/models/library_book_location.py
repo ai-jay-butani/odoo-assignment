@@ -15,7 +15,7 @@ class LibraryBookLocation(models.Model):
     capacity = fields.Integer(string="Capacity")
     notes = fields.Text(string="Note")
     book_ids = fields.Many2many(comodel_name="product.template",
-                                domain=[('is_library_book','=','true')],string="Book Id")
+                                domain=[('is_library_book','=',True)],string="Book Id")
     count_borrowed_book = fields.Integer(compute="_compute_count_borrowed_book")
 
     def action_borrowed_book(self):

@@ -23,12 +23,12 @@
                     <group name="book details">
                        <group>
                              <field name="is_library_book"/>
-                             <field name="author" required="sale_ok == True"/>
-                             <field name="publisher" required="sale_ok == True"/>
+                             <field name="author" required="sale_ok"/>
+                             <field name="publisher" required="sale_ok"/>
                        </group>
                         <group>
-                            <field name="edition" required="sale_ok == True"/>
-                            <field name="published_date" required="sale_ok == True"/>
+                            <field name="edition" required="sale_ok"/>
+                            <field name="published_date" required="sale_ok"/>
                             <field name="pages"/>
                             <field name="available"/>
                             <field name="status"/>

@@ -1,0 +1,60 @@
+<odoo>
+    <!--bulk books tree view-->
+    <record id="library_bulk_book_view_list" model="ir.ui.view">
+            <field name="name">library.bulk.book.list.view</field>
+            <field name="model">library.bulk.book</field>
+            <field name="arch" type="xml">
+                <list string="Bulk upload books">
+                    <field name="book_names"/>
+                    <field name="author_id"/>
+                    <field name="category"/>
+                    <field name="price"/>
+                </list>
+            </field>
+    </record>
+
+    <!--bulk books form view-->
+    <record id="library_bulk_book_view_form" model="ir.ui.view">
+            <field name="name">library.bulk.book.form.view</field>
+            <field name="model">library.bulk.book</field>
+            <field name="arch" type="xml">
+                <form string="Bulk upload books">
+                    <header>
+                        <button name="create_products" string="Create Products" type="object" icon="fa-copy"/>
+                        <button name="revert_changes" string="Revert Changes" type="object" icon="fa-trash-o"
+                                invisible="not check"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button class="oe_stat_button" icon="fa-dollar" type="object" name="action_created_product"
+                                    invisible="not check">
+                                <field string="Product Count" name="count_created_product" widget="statinfo"/>
+                            </button>
+                        </div>
+                        <group>
+                            <field name="book_names"/>
+                            <field name="author_id"/>
+                            <field name="category"/>
+                            <field name="price"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+    </record>
+
+    <!--bulk books action-->
+    <record id="action_library_bulk_book" model="ir.actions.act_window">
+       <field name="name">Upload Books</field>
+       <field name="res_model">library.bulk.book</field>
+       <field name="view_mode">list,form</field>
+       <field name="view_id" ref="library_bulk_book_view_list"/>
+       <field name="help" type="html">
+           <p class="o_view_nocontent_smiling_face">
+               Generate library Details
+           </p>
+       </field>
+    </record>
+
+    <!--bulk books menu-->
+    <menuitem id="library_bulk_books_menu" name="Bulk Upload Book" parent="menu_library" action="action_library_bulk_book" sequence="10"/>
+</odoo>
