@@ -45,3 +45,5 @@ class ProductTemplate(models.Model):
         res = super().create(vals)
         res.default_code = self.env["ir.sequence"].next_by_code('product.template')
         return res
+
+    #inherit create method
