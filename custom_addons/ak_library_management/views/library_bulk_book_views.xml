@@ -7,7 +7,6 @@
                 <list string="Bulk upload books">
                     <field name="book_names"/>
                     <field name="author_id"/>
-                    <field name="category"/>
                     <field name="price"/>
                 </list>
             </field>
@@ -22,19 +21,18 @@
                     <header>
                         <button name="create_products" string="Create Products" type="object" icon="fa-copy"/>
                         <button name="revert_changes" string="Revert Changes" type="object" icon="fa-trash-o"
-                                invisible="not check"/>
+                                invisible="count_created_product == 0"/>
                     </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button class="oe_stat_button" icon="fa-dollar" type="object" name="action_created_product"
-                                    invisible="not check">
+                                    invisible="count_created_product == 0">
                                 <field string="Product Count" name="count_created_product" widget="statinfo"/>
                             </button>
                         </div>
                         <group>
                             <field name="book_names"/>
                             <field name="author_id"/>
-                            <field name="category"/>
                             <field name="price"/>
                         </group>
                     </sheet>

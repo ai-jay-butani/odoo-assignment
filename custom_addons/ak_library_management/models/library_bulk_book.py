@@ -12,9 +12,7 @@ class LibraryBulkBook(models.TransientModel):
 
     book_names = fields.Char(string="Book Names", required=True)
     author_id = fields.Many2one(comodel_name="res.partner",string="Author",required=True)
-    category = fields.Char(string="Category")
     price = fields.Float(string="Price",default=100)
-    check = fields.Boolean("Check",default=False)
     count_created_product = fields.Integer(compute="_compute_count_created_product",default=0)
 
     def create_products(self):
@@ -28,11 +26,11 @@ class LibraryBulkBook(models.TransientModel):
             exist_book = self.env["product.template"].search([("name", "=", book)])
             if exist_book:
                 continue
-            val_list.append({"name":book, "author":self.author_id.name})
+            val_list.append({"name":book, "author":self.author_id.name,
+                            "list_price":self.price})
 
         if val_list:
             self.env['product.template'].create(val_list)
-        self.check = True
 
     def revert_changes(self):
         """
@@ -43,7 +41,6 @@ class LibraryBulkBook(models.TransientModel):
         for book in individual_book:
             exist_record = self.env["product.template"].search([("name", "=", book)])
             exist_record.unlink()
-        self.check = False
 
     @api.depends("book_names")
     def _compute_count_created_product(self):
@@ -51,12 +48,13 @@ class LibraryBulkBook(models.TransientModel):
         Count the current bulk books and display this count on smart button.
         """
         individual_book = self.book_names.split(',')
-        if self.check:
-            self.count_created_product = len(individual_book)
-        elif not self.check and self.count_created_product != 0:
-            self.count_created_product -= len(individual_book)
-        else:
-            self.count_created_product = 0
+        for book in individual_book:
+            if self.env["product.template"].search([("name", "=", book)]):
+                self.count_created_product += 1
+            elif self.count_created_product != 0:
+                self.count_created_product -= 1
+            else:
+                self.count_created_product = 0
 
     def action_created_product(self):
         """
