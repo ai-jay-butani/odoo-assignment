@@ -9,6 +9,7 @@
     'website': 'https://www.aktivsoftware.com',
     'data': [
         'security/ir.model.access.csv',
+        'data/ir_sequence_data.xml',
         'views/library_book_views.xml',
         'views/library_members_views.xml',
         'views/library_book_tags_views.xml',
@@ -18,7 +19,9 @@
         'views/product_template_barcode_views.xml',
         'views/sale_menus.xml',
         'views/library_bulk_book_views.xml',
-        'data/ir_sequence_data.xml'
+        'views/sale_order_wizard_views.xml',
+        'views/res_users_views.xml',
+        'views/sale_order_views.xml'
     ],
     'depends':['sale_management','product'],
     'application': True,

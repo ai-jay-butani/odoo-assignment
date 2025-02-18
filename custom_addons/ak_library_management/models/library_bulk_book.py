@@ -10,12 +10,12 @@ class LibraryBulkBook(models.TransientModel):
     _name = "library.bulk.book"
     _description = "library bulk book"
 
-    book_names = fields.Text(string="Book Names", required=True,default="")
+    book_names = fields.Char(string="Book Names", required=True)
     author_id = fields.Many2one(comodel_name="res.partner",string="Author",required=True)
     category = fields.Char(string="Category")
     price = fields.Float(string="Price",default=100)
     check = fields.Boolean("Check",default=False)
-    count_created_product = fields.Integer(compute="_compute_count_created_product")
+    count_created_product = fields.Integer(compute="_compute_count_created_product",default=0)
 
     def create_products(self):
         """

@@ -16,7 +16,7 @@
                 invisible="status != 'borrowed'"/>
             </xpath>
             <xpath expr="//field[@name='standard_price']" position="attributes">
-                <attribute name="readonly">sale_ok == True</attribute>
+                <attribute name="readonly">sale_ok</attribute>
             </xpath>
             <xpath expr="//page[@name='inventory']" position="after">
                 <page name="book details" string="Book Details">
