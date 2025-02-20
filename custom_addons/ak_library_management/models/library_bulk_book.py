@@ -41,9 +41,12 @@ class LibraryBulkBook(models.TransientModel):
         Count the current bulk books and display this count on smart button.
         """
         for rec in self:
-            individual_book = rec.book_names.split(',')
-            count_book = self.env["product.template"].search([("name", "in", individual_book)])
-            rec.count_created_product = len(count_book)
+            if rec.book_names:
+                individual_book = rec.book_names.split(',')
+                count_book = self.env["product.template"].search([("name", "in", individual_book)])
+                rec.count_created_product = len(count_book)
+            else:
+                rec.count_created_product = 0
 
     def action_created_product(self):
         """
