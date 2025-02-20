@@ -38,13 +38,13 @@ class ProductTemplate(models.Model):
         self.status = "borrowed"
 
     @api.model_create_multi
-    def create(self,vals):
+    def create(self,vals_list):
         """
         inherit the create method and update sequence number.
         """
-        res = super().create(vals)
-        res.default_code = self.env["ir.sequence"].next_by_code('product.template')
-        return res
+        for val in vals_list:
+            val['default_code'] = self.env["ir.sequence"].next_by_code('product.template')
+        return super().create(vals_list)
 
     def _compute_display_name(self):
         for rec in self:

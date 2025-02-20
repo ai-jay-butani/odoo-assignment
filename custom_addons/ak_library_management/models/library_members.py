@@ -16,11 +16,10 @@ class LibraryMembers(models.Model):
     membership_date = fields.Date(string='Membership Start Date')
 
     @api.model_create_multi
-    def create(self, vals):
+    def create(self, vals_list):
         """
         inherit the create method and update sequence number.
         """
-        print(vals)
-        for val in vals:
-            val['membership_no'] = self.env["ir.sequence"].next_by_code('library.members') or _("New")
-        return super().create(vals)
+        for val in vals_list:
+            val['membership_no'] = self.env["ir.sequence"].next_by_code('library.members')
+        return super().create(vals_list)
