@@ -21,16 +21,11 @@ class LibraryBulkBook(models.TransientModel):
         each product of current bulk books.
         """
         individual_book = self.book_names.split(',')
-        val_list = []
+        exist_book = self.env["product.template"].search([("name", "in", individual_book)])
         for book in individual_book:
-            exist_book = self.env["product.template"].search([("name", "=", book)])
-            if exist_book:
-                continue
-            val_list.append({"name":book, "author":self.author_id.name,
+            if not exist_book:
+                self.env['product.template'].create({"name":book, "author":self.author_id.name,
                             "list_price":self.price})
-
-        if val_list:
-            self.env['product.template'].create(val_list)
 
     def revert_changes(self):
         """
@@ -38,23 +33,17 @@ class LibraryBulkBook(models.TransientModel):
         delete all current bulk books from product menu.
         """
         individual_book = self.book_names.split(',')
-        for book in individual_book:
-            exist_record = self.env["product.template"].search([("name", "=", book)])
-            exist_record.unlink()
+        self.env["product.template"].search([("name", "in", individual_book)]).unlink()
 
     @api.depends("book_names")
     def _compute_count_created_product(self):
         """
         Count the current bulk books and display this count on smart button.
         """
-        individual_book = self.book_names.split(',')
-        for book in individual_book:
-            if self.env["product.template"].search([("name", "=", book)]):
-                self.count_created_product += 1
-            elif self.count_created_product != 0:
-                self.count_created_product -= 1
-            else:
-                self.count_created_product = 0
+        for rec in self:
+            individual_book = rec.book_names.split(',')
+            count_book = self.env["product.template"].search([("name", "in", individual_book)])
+            rec.count_created_product = len(count_book)
 
     def action_created_product(self):
         """

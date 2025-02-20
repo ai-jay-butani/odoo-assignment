@@ -8,6 +8,7 @@
                     <field name="book_names"/>
                     <field name="author_id"/>
                     <field name="price"/>
+                    <field name="count_created_product"/>
                 </list>
             </field>
     </record>
