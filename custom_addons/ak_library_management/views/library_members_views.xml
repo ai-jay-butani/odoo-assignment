@@ -5,6 +5,7 @@
             <field name="model">library.members</field>
             <field name="arch" type="xml">
                 <list string="Members">
+                    <field name="membership_no"/>
                     <field name="name"/>
                     <field name="email"/>
                     <field name="phone" />
@@ -23,7 +24,7 @@
                         <group>
                             <group>
                                 <h1>
-                                    <field name="membership_no" readonly="True"/>
+                                    <field name="membership_no" readonly="1"/>
                                 </h1>
                                 <field name="name"/>
                                 <field name="email"/>

@@ -1,0 +1,54 @@
+<odoo>
+    <!--borrow book transaction list view-->
+    <record id="borrow_transaction_history_view_list" model="ir.ui.view">
+            <field name="name">borrow.transaction.history.list.view</field>
+            <field name="model">borrow.transaction.history</field>
+            <field name="arch" type="xml">
+                <list string="Borrow Transaction History">
+                        <field name="customer_id"/>
+                        <field name="borrow_start_date" />
+                        <field name="borrow_end_date"/>
+                        <field name="deposit_amount" invisible="is_member"/>
+                </list>
+            </field>
+    </record>
+
+    <!--borrow book transaction form view-->
+    <record id="borrow_transaction_history_view_form" model="ir.ui.view">
+            <field name="name">borrow.transaction.history.form.view</field>
+            <field name="model">borrow.transaction.history</field>
+            <field name="arch" type="xml">
+                <form string="Books Transaction History">
+                    <sheet>
+                        <group>
+                            <field name="customer_id"/>
+                            <field name="book_ids" widget="many2many_tags" context="{'add_author':True}"/>
+                            <field name="borrow_start_date"/>
+                            <field name="borrow_end_date"/>
+                            <field name="deposit_amount" invisible="is_member"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button special="save" string="Confirm" class="btn-primary"/>
+                        <button special="cancel" string="Cancel"/>
+                    </footer>
+                </form>
+            </field>
+    </record>
+
+    <!--borrow book transaction action-->
+    <record id="action_borrow_transaction_history" model="ir.actions.act_window">
+       <field name="name">Borrow Book</field>
+       <field name="res_model">borrow.transaction.history</field>
+       <field name="view_mode">list,form</field>
+       <field name="view_id" ref="borrow_transaction_history_view_list"/>
+       <field name="help" type="html">
+           <p class="o_view_nocontent_smiling_face">
+               Generate library Details
+           </p>
+       </field>
+    </record>
+
+    <!--borrow book transaction  menu-->
+    <menuitem id="borrow_transaction_history_menu" name="Borrow Transaction" parent="menu_library" action="action_borrow_transaction_history"/>
+</odoo>

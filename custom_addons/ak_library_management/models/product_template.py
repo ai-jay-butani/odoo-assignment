@@ -46,3 +46,18 @@ class ProductTemplate(models.Model):
         res.default_code = self.env["ir.sequence"].next_by_code('product.template')
         return res
 
+    def _compute_display_name(self):
+        for rec in self:
+            if self._context.get('add_author') and rec.author:
+                rec.display_name ='[' + rec.author + ']' + rec.name
+            else:
+                rec.display_name = rec.name
+
+    def borrowed_books(self):
+        return {
+            'name':'Borrow Books',
+            'type':'ir.actions.act_window',
+            'res_model':'borrow.transaction.history',
+            'view_mode':'form',
+            'target':'new'
+        }

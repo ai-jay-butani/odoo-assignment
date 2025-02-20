@@ -21,9 +21,11 @@
         'views/library_bulk_book_views.xml',
         'views/sale_order_wizard_views.xml',
         'views/res_users_views.xml',
-        'views/sale_order_views.xml'
+        'views/sale_order_views.xml',
+        'views/res_partner_views.xml',
+        'views/borrow_transaction_history_views.xml'
     ],
-    'depends':['sale_management','product'],
+    'depends':['sale_management','product','contacts'],
     'application': True,
     'license': 'LGPL-3',
 }

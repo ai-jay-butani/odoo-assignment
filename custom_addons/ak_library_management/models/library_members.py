@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models,fields,api
+from odoo import models,fields,api,_
 
 
 class LibraryMembers(models.Model):
@@ -9,17 +9,18 @@ class LibraryMembers(models.Model):
     _name = 'library.members'
     _description = 'library members'
 
+    membership_no = fields.Char(string="Membership Id",default="New")
     name = fields.Char(string='Member Name',required=True)
     email = fields.Char(string='Email ID')
     phone = fields.Char(string='Contact Number')
     membership_date = fields.Date(string='Membership Start Date')
-    membership_no = fields.Char(string="Member ID",default="New")
 
     @api.model_create_multi
     def create(self, vals):
         """
         inherit the create method and update sequence number.
         """
-        res = super().create(vals)
-        res.membership_no = self.env["ir.sequence"].next_by_code('library.members')
-        return res
+        print(vals)
+        for val in vals:
+            val['membership_no'] = self.env["ir.sequence"].next_by_code('library.members') or _("New")
+        return super().create(vals)
