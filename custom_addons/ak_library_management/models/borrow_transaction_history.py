@@ -5,6 +5,10 @@ from odoo.exceptions import ValidationError
 
 
 class BorrowTransactionHistory(models.Model):
+    """
+    This form is open in wizard in product model and add some fields.
+    we can add borrow books, start date, end date, deposit amount and customer name.
+    """
     _name = 'borrow.transaction.history'
     _description = 'borrow transaction history'
 
@@ -17,10 +21,18 @@ class BorrowTransactionHistory(models.Model):
 
     @api.constrains('borrow_start_date','borrow_end_date')
     def _check_end_date(self):
+        """
+        check end date is grater than start date or not.
+        param: none
+        """
         if self.borrow_end_date < self.borrow_start_date:
             raise ValidationError("Borrow end date should be higher than start date.")
 
     def custom_wizard(self,message):
+        """
+        repeated part in code when we check any condition then return custom wizard.
+        param: none
+        """
         return {
            'name': 'ValidationError',
            'type': 'ir.actions.act_window',
@@ -31,6 +43,11 @@ class BorrowTransactionHistory(models.Model):
         }
 
     def action_confirm(self):
+        """
+        when we click confirm button then check conditions like customer is trustworthy or not,
+        check product quantity,check books count
+        param: none
+        """
         if self.customer_id.not_trust_worthy:
             message = "Customer is not trustworthy. Are you sure you want to continue?"
             return self.custom_wizard(message)
