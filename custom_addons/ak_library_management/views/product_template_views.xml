@@ -13,6 +13,7 @@
                 <field name="status" widget="statusbar" statusbar_visible="available,borrowed"
                        options="{'clickable':'1'}"/>
                 <button name="borrowed_books" string="Borrowed Books" type="object"/>
+                <button name="return_book" string="Return Book" type="object"/>
             </xpath>
             <xpath expr="//field[@name='standard_price']" position="attributes">
                 <attribute name="readonly">sale_ok</attribute>

@@ -9,6 +9,7 @@ class LibraryBookLocation(models.Model):
     """
     _name = "library.book.location"
     _description = "library book location"
+    _inherit = 'mail.thread'
 
     name = fields.Char(string="Library Name",required=True)
     location = fields.Char(string="Library Location")
@@ -17,6 +18,8 @@ class LibraryBookLocation(models.Model):
     book_ids = fields.Many2many(comodel_name="product.template",
                                 domain=[('is_library_book','=',True)],string="Book Id")
     count_borrowed_book = fields.Integer(compute="_compute_count_borrowed_book")
+
+    _sql_constraints = [("name_unique","unique(name)","The library is unique.")]
 
     def action_borrowed_book(self):
         """

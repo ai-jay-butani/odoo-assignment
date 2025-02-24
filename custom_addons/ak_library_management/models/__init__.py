@@ -11,3 +11,4 @@ from . import sale_order
 from . import sale_order_wizard
 from . import res_partner
 from . import borrow_transaction_history
+from . import borrow_transaction_history_wizard
