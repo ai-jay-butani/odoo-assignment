@@ -23,13 +23,14 @@ class ProductTemplate(models.Model):
     status = fields.Selection([
         ('available', 'Available'),
         ('borrowed', 'Borrowed'),
-        ('reserved', 'Reserved')
+        ('returned', 'Returned')
     ],string="Status",tracking=True)
 
     def mark_as_available(self):
         """
         If status is borrowed then mark as available button is display
         and when we click that button then this method is call
+        param: none
         """
         self.status = "available"
 
@@ -37,6 +38,7 @@ class ProductTemplate(models.Model):
         """
         If status is available then mark as borrowed button is display
         and when we click that button then this method is call
+        param: none
         """
         self.status = "borrowed"
         date_deadline = date.today() + timedelta(days=10)
@@ -47,12 +49,19 @@ class ProductTemplate(models.Model):
     def create(self,vals_list):
         """
         inherit the create method and update sequence number.
+        param: vals_list
+        type: list of dictionary
         """
         for val in vals_list:
             val['default_code'] = self.env["ir.sequence"].next_by_code('product.template')
         return super().create(vals_list)
 
     def _compute_display_name(self):
+        """
+        override compute display name and change book name format to
+        [author_name]book_name.
+        param: none
+        """
         for rec in self:
             if self._context.get('add_author') and rec.author:
                 rec.display_name = '[' + rec.author + ']' + rec.name
@@ -62,12 +71,20 @@ class ProductTemplate(models.Model):
     @api.model
     @api.readonly
     def name_search(self, name='', args=None, operator='ilike', limit=None):
+        """
+        override name_search method to search book by author name.
+        param: name, args, operator, limit
+        """
         args = list(args or [])
         if name:
             args += [('author', operator, name)]
         return super().name_search(args=args, limit=limit)
 
     def borrowed_books(self):
+        """
+        when we click borrow books button then redirect wizard action
+        param: none
+        """
         return {
             'name':'Borrow Books',
             'type':'ir.actions.act_window',
@@ -76,8 +93,13 @@ class ProductTemplate(models.Model):
             'target':'new'
         }
 
-    def return_book(self):
+    @api.constrains('status')
+    def _check_return_book(self):
+        """
+        check status is returned then raise a validation error
+        param: none
+        """
         date_deadline = date.today() + timedelta(days=10)
-        if self.status == 'borrowed' and date.today() < date_deadline:
+        if self.status == 'returned' and date.today() < date_deadline:
             raise ValidationError(f"return date is {date_deadline} so you can't return book.")
 
