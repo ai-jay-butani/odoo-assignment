@@ -12,12 +12,13 @@ class LibraryBookLocation(models.Model):
     _inherit = 'mail.thread'
 
     name = fields.Char(string="Library Name",required=True)
-    location = fields.Char(string="Library Location")
+    location = fields.Char(string="Library Location",tracking=True)
     capacity = fields.Integer(string="Capacity")
     notes = fields.Text(string="Note")
     book_ids = fields.Many2many(comodel_name="product.template",
-                                domain=[('is_library_book','=',True)],string="Book Id")
+                                domain=[('is_library_book','=',True)],string="Book Id",tracking=True)
     count_borrowed_book = fields.Integer(compute="_compute_count_borrowed_book")
+    librarian_id = fields.Many2one(comodel_name='res.users', string='Librarian')
 
     _sql_constraints = [("name_unique","unique(name)","The library is unique.")]
 
@@ -41,3 +42,13 @@ class LibraryBookLocation(models.Model):
         """
         book_borrowed_list = [record for record in self.book_ids if record.status == 'borrowed']
         self.count_borrowed_book = len(book_borrowed_list)
+
+    @api.constrains('book_ids')
+    def _check_book_ids(self):
+        """
+        send notification to librarian if books is add or delete in many2many field.
+        """
+        self.env['bus.bus']._sendone(self.librarian_id.partner_id, 'simple_notification', {
+            'type': 'success',
+            'message': f"In library[{self.name}] books list are updated.",
+        })

@@ -28,6 +28,7 @@
                         <group>
                             <field name="name"/>
                             <field name="location"/>
+                            <field name="librarian_id"/>
                             <field name="capacity" />
                             <field name="notes" />
                         </group>

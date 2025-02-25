@@ -63,7 +63,7 @@ class BorrowTransactionHistory(models.Model):
             [books_name.append(book.name) for rec in search_recd[:-1] for book in rec.book_ids if book.name not in books_name]
 
             if books_name:
-                message = f"Customer already has [{self.customer_id.name}] open borrow transactions with {books_name} books. Are you sure you want to borrow more books?"
+                message = f"Customer already has [{len(search_recd)-1}] open borrow transactions with {books_name} books. Are you sure you want to borrow more books?"
                 return self.custom_wizard(message)
             else:
                 message = f"Are you sure you want to allow borrowing more than 5 books for this customer?"

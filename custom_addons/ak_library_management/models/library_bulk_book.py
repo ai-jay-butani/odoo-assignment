@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models,fields,api
+from odoo import models,fields,api,_
 
 
 class LibraryBulkBook(models.TransientModel):
@@ -26,6 +26,10 @@ class LibraryBulkBook(models.TransientModel):
             if not exist_book:
                 self.env['product.template'].create({"name":book, "author":self.author_id.name,
                             "list_price":self.price})
+                self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+                    'type': 'success',
+                    'message': f"{book} is created as product.",
+                })
 
     def revert_changes(self):
         """
@@ -34,6 +38,10 @@ class LibraryBulkBook(models.TransientModel):
         """
         individual_book = self.book_names.split(',')
         self.env["product.template"].search([("name", "in", individual_book)]).unlink()
+        self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+            'type': 'danger',
+            'message': f"This {individual_book} products are deleted.",
+        })
 
     @api.depends("book_names")
     def _compute_count_created_product(self):

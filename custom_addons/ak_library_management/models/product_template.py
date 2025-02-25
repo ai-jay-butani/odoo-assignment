@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models,fields,api
-from datetime import *
-
+from datetime import date,timedelta
 from odoo.exceptions import ValidationError
 
 
@@ -97,9 +96,15 @@ class ProductTemplate(models.Model):
     def _check_return_book(self):
         """
         check status is returned then raise a validation error
+        if status is not returned then display notification
         param: none
         """
         date_deadline = date.today() + timedelta(days=10)
         if self.status == 'returned' and date.today() < date_deadline:
             raise ValidationError(f"return date is {date_deadline} so you can't return book.")
+        else:
+            self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+                'type': 'warning',
+                'message': f"{self.name} book status is changed to {self.status}",
+            })
 
