@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import models,fields,api
-from datetime import datetime
+from datetime import date,timedelta
 from odoo.exceptions import ValidationError
 
 
@@ -14,7 +14,7 @@ class BorrowTransactionHistory(models.Model):
 
     customer_id = fields.Many2one(comodel_name='res.partner',string='Customer')
     book_ids = fields.Many2many(comodel_name='product.template',string='Books')
-    borrow_start_date = fields.Date(string="Start Date",default=datetime.now())
+    borrow_start_date = fields.Date(string="Start Date",default=date.today())
     borrow_end_date = fields.Date(string='End Date',required=True)
     deposit_amount = fields.Float(string="Deposit")
     is_member = fields.Boolean(related='customer_id.is_member')
@@ -72,6 +72,16 @@ class BorrowTransactionHistory(models.Model):
         for rec in self.book_ids:
             if rec.qty_available:
                 rec.qty_available -= 1
+
+    def reminder_borrow_book(self):
+        date_deadline = date.today() + timedelta(days=2)
+        recs = self.search([('borrow_end_date','=',date_deadline)])
+        for rec in recs:
+            print("......",rec)
+            self.env['bus.bus']._sendone(rec.customer_id, 'simple_notification', {
+                'type': 'warning',
+                'message': f"reminder: your book return date is {rec.borrow_end_date}",
+            })
 
 
 
