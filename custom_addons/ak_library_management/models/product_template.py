@@ -99,12 +99,17 @@ class ProductTemplate(models.Model):
         if status is not returned then display notification
         param: none
         """
-        date_deadline = date.today() + timedelta(days=10)
+        date_deadline = date.today()
         if self.status == 'returned' and date.today() < date_deadline:
             raise ValidationError(f"return date is {date_deadline} so you can't return book.")
-        else:
-            self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
-                'type': 'warning',
-                'message': f"{self.name} book status is changed to {self.status}",
-            })
+        elif self.status == 'borrowed':
+            self.message_post(body=f"{self.env.user.name} is borrowed the book and "
+                              f"the borrow date is {date.today()}")
+        self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
+            'type': 'warning',
+            'message': f"{self.name} book status is changed to {self.status}",
+        })
+
+    def mark_as_returned(self):
+        self.write({'status':'returned'})
 
