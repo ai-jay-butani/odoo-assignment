@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import models,fields,api
 from datetime import date,timedelta
+from odoo import models,fields,api
 from odoo.exceptions import ValidationError
 
 
@@ -41,7 +41,9 @@ class ProductTemplate(models.Model):
         """
         self.status = "borrowed"
         date_deadline = date.today() + timedelta(days=10)
-        return super().activity_schedule(date_deadline=date_deadline,summary=f'book borrowed by {self.env.user.name} and return date {date_deadline}')
+        return super().activity_schedule(date_deadline=date_deadline,
+                                         summary=f'book borrowed by {self.env.user.name} '
+                                                 f'and return date {date_deadline}')
 
 
     @api.model_create_multi
@@ -102,7 +104,7 @@ class ProductTemplate(models.Model):
         date_deadline = date.today()
         if self.status == 'returned' and date.today() < date_deadline:
             raise ValidationError(f"return date is {date_deadline} so you can't return book.")
-        elif self.status == 'borrowed':
+        if self.status == 'borrowed':
             self.message_post(body=f"{self.env.user.name} is borrowed the book and "
                               f"the borrow date is {date.today()}")
         self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
@@ -111,5 +113,8 @@ class ProductTemplate(models.Model):
         })
 
     def mark_as_returned(self):
+        """
+        change status to returned.
+        return: None
+        """
         self.write({'status':'returned'})
-

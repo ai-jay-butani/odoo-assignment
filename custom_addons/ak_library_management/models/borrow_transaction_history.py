@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import models,fields,api
 from datetime import date,timedelta
+from odoo import models,fields,api
 from odoo.exceptions import ValidationError
 
 
@@ -55,21 +55,25 @@ class BorrowTransactionHistory(models.Model):
 
         product_list = [rec.name for rec in self.book_ids if rec.qty_available == 0]
         if product_list:
-            message = f"The following books are out of stock: {product_list}. Are you sure you want to continue?"
+            message = (f"The following books are out of stock: {product_list}."
+                       f" Are you sure you want to continue?")
             return self.custom_wizard(message)
 
         if len(self.book_ids) > 5:
             search_recd = self.search([('customer_id',"=",self.customer_id)])
             books_name = []
-            [books_name.append(book.name) for rec in search_recd[:-1] for book in rec.book_ids if book.name not in books_name]
+            [books_name.append(book.name) for rec in search_recd[:-1]
+             for book in rec.book_ids if book.name not in books_name]
 
             if books_name:
-                message = (f"Customer already has [{len(search_recd)-1}] open borrow transactions with {books_name} books. "
+                message = (f"Customer already has [{len(search_recd)-1}] open borrow transactions "
+                           f"with {books_name} books. "
                            f"Are you sure you want to borrow more books?")
                 return self.custom_wizard(message)
-            else:
-                message = f"Are you sure you want to allow borrowing more than 5 books for this customer?"
-                return self.custom_wizard(message)
+
+            message = ("Are you sure you want to allow "
+                       "borrowing more than 5 books for this customer?")
+            return self.custom_wizard(message)
 
     def reminder_borrow_book(self):
         """
@@ -97,10 +101,6 @@ class BorrowTransactionHistory(models.Model):
         for rec in search_rec[:-1]:
             for book in rec.book_ids:
                 if rec.borrow_end_date < date.today() and book.status == "borrowed":
-                    raise ValidationError(f"{rec.customer_id.name} with overdue books cannot new ones until"
+                    raise ValidationError(f"{rec.customer_id.name} with overdue books "
+                                          f"cannot new ones until"
                                           f" you return the overdue items.")
-
-
-
-
-
