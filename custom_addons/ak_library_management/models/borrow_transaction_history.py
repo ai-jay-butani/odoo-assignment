@@ -97,7 +97,7 @@ class BorrowTransactionHistory(models.Model):
         param: None
         return: Exception
         """
-        search_rec = self.search([('customer_id', "=", self.customer_id)])
+        search_rec = self.search([('customer_id.name', "=", self.customer_id.name)])
         for rec in search_rec[:-1]:
             for book in rec.book_ids:
                 if rec.borrow_end_date < date.today() and book.status == "borrowed":
