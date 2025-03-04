@@ -1,4 +1,22 @@
 <odoo>
+
+    <!--borrow book transaction search view-->
+    <record id="borrow_transaction_history_view_search" model="ir.ui.view">
+            <field name="name">borrow.transaction.history.search.view</field>
+            <field name="model">borrow.transaction.history</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="customer_id"/>
+                    <group>
+                        <filter name="return_date_group_by"
+                                context="{'group_by':'borrow_end_date'}"
+                                domain="[]"
+                                string="Due Date"/>
+                    </group>
+                </search>
+            </field>
+    </record>
+
     <!--borrow book transaction list view-->
     <record id="borrow_transaction_history_view_list" model="ir.ui.view">
             <field name="name">borrow.transaction.history.list.view</field>

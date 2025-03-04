@@ -9,7 +9,7 @@ class BorrowTransactionHistory(models.TransientModel):
     _name = 'borrow.transaction.history.wizard'
     _description = 'borrow transaction history wizard'
 
-    message = fields.Text()
+    message = fields.Text(string='Error:')
 
     def action_cancel(self):
         """

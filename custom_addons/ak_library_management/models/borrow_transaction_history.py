@@ -11,8 +11,9 @@ class BorrowTransactionHistory(models.Model):
     """
     _name = 'borrow.transaction.history'
     _description = 'borrow transaction history'
+    _rec_name = 'customer_id'
 
-    customer_id = fields.Many2one(comodel_name='res.partner',string='Customer')
+    customer_id = fields.Many2one(comodel_name='res.partner',string='Customer',required=True)
     book_ids = fields.Many2many(comodel_name='product.template',string='Books')
     borrow_start_date = fields.Date(string="Start Date",default=date.today())
     borrow_end_date = fields.Date(string='End Date',required=True)
@@ -34,7 +35,6 @@ class BorrowTransactionHistory(models.Model):
         param: none
         """
         return {
-           'name': 'ValidationError',
            'type': 'ir.actions.act_window',
            'res_model': 'borrow.transaction.history.wizard',
            'view_mode': 'form',
@@ -47,6 +47,7 @@ class BorrowTransactionHistory(models.Model):
         when we click confirm button then check conditions like customer is trustworthy or not,
         check product quantity,check books count
         param: none
+        return: wizard
         """
         if self.customer_id.not_trust_worthy:
             message = "Customer is not trustworthy. Are you sure you want to continue?"
@@ -58,30 +59,46 @@ class BorrowTransactionHistory(models.Model):
             return self.custom_wizard(message)
 
         if len(self.book_ids) > 5:
-            search_recd = self.search([('customer_id.name',"=",self.customer_id.name)])
+            search_recd = self.search([('customer_id',"=",self.customer_id)])
             books_name = []
             [books_name.append(book.name) for rec in search_recd[:-1] for book in rec.book_ids if book.name not in books_name]
 
             if books_name:
-                message = f"Customer already has [{len(search_recd)-1}] open borrow transactions with {books_name} books. Are you sure you want to borrow more books?"
+                message = (f"Customer already has [{len(search_recd)-1}] open borrow transactions with {books_name} books. "
+                           f"Are you sure you want to borrow more books?")
                 return self.custom_wizard(message)
             else:
                 message = f"Are you sure you want to allow borrowing more than 5 books for this customer?"
                 return self.custom_wizard(message)
 
-        for rec in self.book_ids:
-            if rec.qty_available:
-                rec.qty_available -= 1
-
     def reminder_borrow_book(self):
-        date_deadline = date.today() + timedelta(days=2)
-        recs = self.search([('borrow_end_date','=',date_deadline)])
-        for rec in recs:
-            print("......",rec)
-            self.env['bus.bus']._sendone(rec.customer_id, 'simple_notification', {
-                'type': 'warning',
-                'message': f"reminder: your book return date is {rec.borrow_end_date}",
-            })
+        """
+        Borrow book remainder for customer if the borrow end date is within next 2 days
+        param: None
+        return: None
+        """
+        all_recd = self.search([])
+        for record in all_recd:
+            date_deadline = record.borrow_start_date + timedelta(days=2)
+            if record.borrow_end_date == date_deadline:
+                self.env['bus.bus']._sendone(record.customer_id, 'simple_notification', {
+                    'type': 'warning',
+                    'message': f"reminder: your book return date is {record.borrow_end_date}",
+                })
+
+    def automated_action(self):
+        """
+        If customer has not return book before due date so that customer can't borrow
+        more books.
+        param: None
+        return: Exception
+        """
+        search_rec = self.search([('customer_id', "=", self.customer_id)])
+        for rec in search_rec[:-1]:
+            for book in rec.book_ids:
+                if rec.borrow_end_date < date.today() and book.status == "borrowed":
+                    raise ValidationError(f"{rec.customer_id.name} with overdue books cannot new ones until"
+                                          f" you return the overdue items.")
 
 
 

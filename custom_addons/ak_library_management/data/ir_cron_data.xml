@@ -1,4 +1,6 @@
 <odoo>
+
+     <!--borrow transaction history schedule action-->
     <record id="ir_cron_borrow_transaction_history" model="ir.cron">
         <field name="name">Borrow Book Reminder</field>
         <field name="model_id" ref="model_borrow_transaction_history"/>
@@ -8,6 +10,7 @@
         <field name='interval_type'>minutes</field>
     </record>
 
+     <!--borrow transaction history change book status server action-->
     <record id="ir_actions_borrow_transaction_history" model="ir.actions.server">
         <field name="name">Change Book status</field>
         <field name="model_id" ref="model_borrow_transaction_history"/>
@@ -23,5 +26,21 @@
                     })
                     book.mark_as_returned()
         </field>
+    </record>
+
+     <!--borrow transaction history server action-->
+    <record id="server_actions_borrow_transaction_history" model="ir.actions.server">
+        <field name="name">Due Date Check</field>
+        <field name="model_id" ref="model_borrow_transaction_history"/>
+        <field name="state">code</field>
+        <field name="code">record.automated_action()</field>
+    </record>
+
+    <!--borrow transaction history automated action-->
+    <record id="automated_action_borrow_transaction_history" model="base.automation">
+        <field name="name">Due Date Check</field>
+        <field name="model_id" ref="model_borrow_transaction_history"/>
+        <field name="trigger">on_create_or_write</field>
+        <field name="action_server_ids" eval="[(4,ref('server_actions_borrow_transaction_history'))]"/>
     </record>
 </odoo>
