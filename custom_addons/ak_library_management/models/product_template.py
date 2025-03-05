@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import date,timedelta
 from odoo import models,fields,api
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError,UserError
 
 
 class ProductTemplate(models.Model):
@@ -118,3 +118,10 @@ class ProductTemplate(models.Model):
         return: None
         """
         self.write({'status':'returned'})
+
+    def _automated_action_duplicate_product_name(self):
+        if self.name:
+            existing_product = self.env['product.template'].search([('id', '!=', self.id), ('name', '=', self.name)])
+            if existing_product:
+                raise UserError("You can't have the same Product Name twice!  "
+                                "(" + self.name + ")")

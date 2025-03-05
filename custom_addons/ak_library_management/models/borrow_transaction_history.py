@@ -60,7 +60,7 @@ class BorrowTransactionHistory(models.Model):
             return self.custom_wizard(message)
 
         if len(self.book_ids) > 5:
-            search_recd = self.search([('customer_id',"=",self.customer_id)])
+            search_recd = self.search([('customer_id.id',"=",self.customer_id.id)])
             books_name = []
             [books_name.append(book.name) for rec in search_recd[:-1]
              for book in rec.book_ids if book.name not in books_name]
@@ -74,6 +74,12 @@ class BorrowTransactionHistory(models.Model):
             message = ("Are you sure you want to allow "
                        "borrowing more than 5 books for this customer?")
             return self.custom_wizard(message)
+
+        for rec in self.book_ids:
+            if rec.qty_available:
+                product_id = self.env['product.product'].search([('name','=',rec.name)])
+                loc = self.env['stock.quant'].search([('product_id.name','=',rec.name)])
+                self.env['stock.quant']._update_available_quantity(product_id, loc[0].location_id,quantity=-1)
 
     def reminder_borrow_book(self):
         """
@@ -97,7 +103,7 @@ class BorrowTransactionHistory(models.Model):
         param: None
         return: Exception
         """
-        search_rec = self.search([('customer_id.name', "=", self.customer_id.name)])
+        search_rec = self.search([('customer_id.id', "=", self.customer_id.id)])
         for rec in search_rec[:-1]:
             for book in rec.book_ids:
                 if rec.borrow_end_date < date.today() and book.status == "borrowed":

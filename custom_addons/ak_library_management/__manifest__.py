@@ -27,7 +27,7 @@
         'views/borrow_transaction_history_views.xml',
         'views/borrow_transaction_history_wizard_views.xml'
     ],
-    'depends':['sale_management','contacts','stock'],
+    'depends':['sale_management','contacts','stock','base_automation'],
     'application': True,
     'license': 'LGPL-3',
 }
