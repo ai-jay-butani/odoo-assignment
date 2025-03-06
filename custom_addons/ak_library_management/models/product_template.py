@@ -102,8 +102,12 @@ class ProductTemplate(models.Model):
         param: none
         """
         date_deadline = date.today()
-        if self.status == 'returned' and date.today() < date_deadline:
-            raise ValidationError(f"return date is {date_deadline} so you can't return book.")
+        if self.status == 'returned':
+            if date.today() < date_deadline:
+                raise ValidationError(f"return date is {date_deadline} "
+                                      f"so you can't return book.")
+            else:
+                self.message_post(body=f"{self.env.user.name} is returned the book.")
         if self.status == 'borrowed':
             self.message_post(body=f"{self.env.user.name} is borrowed the book and "
                               f"the borrow date is {date.today()}")

@@ -88,13 +88,18 @@ class BorrowTransactionHistory(models.Model):
         return: None
         """
         all_recd = self.search([])
-        for record in all_recd:
-            date_deadline = record.borrow_start_date + timedelta(days=2)
-            if record.borrow_end_date == date_deadline:
-                self.env['bus.bus']._sendone(record.customer_id, 'simple_notification', {
-                    'type': 'warning',
-                    'message': f"reminder: your book return date is {record.borrow_end_date}",
-                })
+        for records in all_recd:
+            date_deadline = records.borrow_start_date + timedelta(days=2)
+            if records.borrow_end_date == date_deadline:
+                for record in records.book_ids:
+                    if record.status == "borrowed":
+                        self.env['bus.bus']._sendone(records.customer_id, 'simple_notification', {
+                            'type': 'warning',
+                            'message': f"reminder: your book return date is {records.borrow_end_date}",
+                        })
+                        template = self.env.ref('ak_library_management.email_template_book_reminder')
+                        template.send_mail(records.id,force_send=True)
+                        print("send mail....")
 
     def automated_action(self):
         """

@@ -11,6 +11,7 @@
         'security/ir.model.access.csv',
         'data/ir_sequence_data.xml',
         'data/ir_cron_data.xml',
+        'data/mail_template_data.xml',
         'views/library_book_views.xml',
         'views/library_members_views.xml',
         'views/library_book_tags_views.xml',

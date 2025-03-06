@@ -7,7 +7,7 @@
         <field name="state">code</field>
         <field name="code">model.reminder_borrow_book()</field>
         <field name='interval_number'>1</field>
-        <field name='interval_type'>minutes</field>
+        <field name='interval_type'>weeks</field>
     </record>
 
      <!--borrow transaction history change book status server action-->
