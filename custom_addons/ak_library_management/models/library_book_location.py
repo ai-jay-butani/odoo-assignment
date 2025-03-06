@@ -1,5 +1,6 @@
-#-*- coding: utf-8 -*-
-from odoo import models,fields,api
+# -*- coding: utf-8 -*-
+
+from odoo import models, fields, api
 
 
 class LibraryBookLocation(models.Model):
@@ -11,16 +12,17 @@ class LibraryBookLocation(models.Model):
     _description = "library book location"
     _inherit = 'mail.thread'
 
-    name = fields.Char(string="Library Name",required=True)
-    location = fields.Char(string="Library Location",tracking=True)
+    name = fields.Char(string="Library Name", required=True)
+    location = fields.Char(string="Library Location", tracking=True)
     capacity = fields.Integer(string="Capacity")
     notes = fields.Text(string="Note")
     book_ids = fields.Many2many(comodel_name="product.template",
-                                domain=[('is_library_book','=',True)],string="Book Id",tracking=True)
+                                domain=[('is_library_book', '=', True)],
+                                string="Book Id", tracking=True)
     count_borrowed_book = fields.Integer(compute="_compute_count_borrowed_book")
     librarian_id = fields.Many2one(comodel_name='res.users', string='Librarian')
 
-    _sql_constraints = [("name_unique","unique(name)","The library is unique.")]
+    _sql_constraints = [("name_unique", "unique(name)", "The library is unique.")]
 
     def action_borrowed_book(self):
         """
@@ -32,7 +34,7 @@ class LibraryBookLocation(models.Model):
             'type': 'ir.actions.act_window',
             'view_mode': 'list,form',
             'res_model': 'product.template',
-            'domain': [('status', '=', 'borrowed'),('id','in',self.book_ids.ids)],
+            'domain': [('status', '=', 'borrowed'), ('id', 'in', self.book_ids.ids)],
         }
 
     @api.depends("book_ids")

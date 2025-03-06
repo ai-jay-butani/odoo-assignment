@@ -6,7 +6,7 @@
             <field name="arch" type="xml">
                 <list string="Members">
                     <field name="membership_no"/>
-                    <field name="name"/>
+                    <field name="member_id"/>
                     <field name="email"/>
                     <field name="phone" />
                     <field name="membership_date" />
@@ -20,13 +20,17 @@
             <field name="model">library.members</field>
             <field name="arch" type="xml">
                 <form string="Members">
+                    <header>
+                        <button name="send_renewal_mail" string="Send renewal mail"
+                                type="object" icon="fa-envelope"/>
+                    </header>
                     <sheet>
                         <group>
                             <group>
                                 <h1>
                                     <field name="membership_no" readonly="1"/>
                                 </h1>
-                                <field name="name"/>
+                                <field name="member_id"/>
                                 <field name="email"/>
                             </group>
                             <group>

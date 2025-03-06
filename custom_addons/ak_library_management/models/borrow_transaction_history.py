@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-from datetime import date,timedelta
-from odoo import models,fields,api
+
+from datetime import date, timedelta
+from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 
@@ -13,14 +14,14 @@ class BorrowTransactionHistory(models.Model):
     _description = 'borrow transaction history'
     _rec_name = 'customer_id'
 
-    customer_id = fields.Many2one(comodel_name='res.partner',string='Customer',required=True)
-    book_ids = fields.Many2many(comodel_name='product.template',string='Books')
-    borrow_start_date = fields.Date(string="Start Date",default=date.today())
-    borrow_end_date = fields.Date(string='End Date',required=True)
+    customer_id = fields.Many2one(comodel_name='res.partner', string='Customer', required=True)
+    book_ids = fields.Many2many(comodel_name='product.template', string='Books')
+    borrow_start_date = fields.Date(string="Start Date", default=date.today())
+    borrow_end_date = fields.Date(string='End Date', required=True)
     deposit_amount = fields.Float(string="Deposit")
     is_member = fields.Boolean(related='customer_id.is_member')
 
-    @api.constrains('borrow_start_date','borrow_end_date')
+    @api.constrains('borrow_start_date', 'borrow_end_date')
     def _check_end_date(self):
         """
         check end date is grater than start date or not.
@@ -29,17 +30,17 @@ class BorrowTransactionHistory(models.Model):
         if self.borrow_end_date < self.borrow_start_date:
             raise ValidationError("Borrow end date should be higher than start date.")
 
-    def custom_wizard(self,message):
+    def custom_wizard(self, message):
         """
         repeated part in code when we check any condition then return custom wizard.
         param: none
         """
         return {
-           'type': 'ir.actions.act_window',
-           'res_model': 'borrow.transaction.history.wizard',
-           'view_mode': 'form',
-           'target': 'new',
-           'context': {'default_message': message}
+            'type': 'ir.actions.act_window',
+            'res_model': 'borrow.transaction.history.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {'default_message': message}
         }
 
     def action_confirm(self):
@@ -60,14 +61,14 @@ class BorrowTransactionHistory(models.Model):
             return self.custom_wizard(message)
 
         if len(self.book_ids) > 5:
-            search_recd = self.search([('customer_id.id',"=",self.customer_id.id)])
+            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)])
             books_name = []
             [books_name.append(book.name) for rec in search_recd[:-1]
              for book in rec.book_ids if book.name not in books_name]
 
             if books_name:
-                message = (f"Customer already has [{len(search_recd)-1}] open borrow transactions "
-                           f"with {books_name} books. "
+                message = (f"Customer already has [{len(search_recd) - 1}] open "
+                           f"borrow transactions with {books_name} books. "
                            f"Are you sure you want to borrow more books?")
                 return self.custom_wizard(message)
 
@@ -77,29 +78,26 @@ class BorrowTransactionHistory(models.Model):
 
         for rec in self.book_ids:
             if rec.qty_available:
-                product_id = self.env['product.product'].search([('name','=',rec.name)])
-                loc = self.env['stock.quant'].search([('product_id.name','=',rec.name)])
-                self.env['stock.quant']._update_available_quantity(product_id, loc[0].location_id,quantity=-1)
+                product_id = self.env['product.product'].search([('name', '=', rec.name)])
+                loc = self.env['stock.quant'].search([('product_id.name', '=', rec.name)])
+                self.env['stock.quant']._update_available_quantity(product_id, loc[0].location_id,
+                                                                   quantity=-1)
 
     def reminder_borrow_book(self):
         """
-        Borrow book remainder for customer if the borrow end date is within next 2 days
+        Borrow book remainder for customer if the borrow end date is within next 2 days and
+        send the mail to the customer
         param: None
         return: None
         """
         all_recd = self.search([])
         for records in all_recd:
             date_deadline = records.borrow_start_date + timedelta(days=2)
-            if records.borrow_end_date == date_deadline:
-                for record in records.book_ids:
-                    if record.status == "borrowed":
-                        self.env['bus.bus']._sendone(records.customer_id, 'simple_notification', {
-                            'type': 'warning',
-                            'message': f"reminder: your book return date is {records.borrow_end_date}",
-                        })
-                        template = self.env.ref('ak_library_management.email_template_book_reminder')
-                        template.send_mail(records.id,force_send=True)
-                        print("send mail....")
+            check_status = [rec.status == 'borrowed' for rec in records.book_ids]
+            if (records.borrow_end_date == date_deadline and
+                    any(check_status)):
+                template = self.env.ref('ak_library_management.email_template_book_reminder')
+                template.send_mail(records.id, force_send=True)
 
     def automated_action(self):
         """

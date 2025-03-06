@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import models,fields
+
+from odoo import models, fields
 
 
 class SaleOrder(models.Model):
@@ -32,12 +33,12 @@ class SaleOrder(models.Model):
             message = ("Approval needed! The following books have low stock:"
                        + ','.join(low_stock_products))
             return {
-                'name':'ValidationError',
-                'type':'ir.actions.act_window',
-                'res_model':'sale.order.wizard',
-                'view_mode':'form',
-                'target':'new',
-                'context':{'default_message':message}
+                'name': 'ValidationError',
+                'type': 'ir.actions.act_window',
+                'res_model': 'sale.order.wizard',
+                'view_mode': 'form',
+                'target': 'new',
+                'context': {'default_message': message}
             }
         return super().action_confirm()
 

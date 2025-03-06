@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Library Management',
-    'version': '18.0.1.0.0',
+    'version': '18.0.1.0.1',
     'author': 'Jay Butani',
     'sequence': 5,
     'summary': 'Library Management Module',
@@ -21,12 +21,12 @@
         'views/product_template_barcode_views.xml',
         'views/sale_menus.xml',
         'views/library_bulk_book_views.xml',
-        'views/sale_order_wizard_views.xml',
         'views/res_users_views.xml',
+        'wizard/sale_order_wizard_views.xml',
         'views/sale_order_views.xml',
         'views/res_partner_views.xml',
         'views/borrow_transaction_history_views.xml',
-        'views/borrow_transaction_history_wizard_views.xml'
+        'wizard/borrow_transaction_history_wizard_views.xml',
     ],
     'depends':['sale_management','contacts','stock','base_automation'],
     'application': True,

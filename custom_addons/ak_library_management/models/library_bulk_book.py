@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from odoo import models,fields,api,_
+
+from odoo import models, fields, api
 
 
 class LibraryBulkBook(models.TransientModel):
@@ -11,9 +12,9 @@ class LibraryBulkBook(models.TransientModel):
     _description = "library bulk book"
 
     book_names = fields.Char(string="Book Names", required=True)
-    author_id = fields.Many2one(comodel_name="res.partner",string="Author",required=True)
-    price = fields.Float(string="Price",default=100)
-    count_created_product = fields.Integer(compute="_compute_count_created_product",default=0)
+    author_id = fields.Many2one(comodel_name="res.partner", string="Author", required=True)
+    price = fields.Float(string="Price", default=100)
+    count_created_product = fields.Integer(compute="_compute_count_created_product", default=0)
 
     def create_products(self):
         """
@@ -24,8 +25,8 @@ class LibraryBulkBook(models.TransientModel):
         exist_book = self.env["product.template"].search([("name", "in", individual_book)])
         for book in individual_book:
             if not exist_book:
-                self.env['product.template'].create({"name":book, "author":self.author_id.name,
-                            "list_price":self.price})
+                self.env['product.template'].create({"name": book, "author": self.author_id.name,
+                                                     "list_price": self.price})
                 self.env['bus.bus']._sendone(self.env.user.partner_id, 'simple_notification', {
                     'type': 'success',
                     'message': f"{book} is created as product.",
@@ -77,4 +78,3 @@ class LibraryBulkBook(models.TransientModel):
             'res_model': 'product.template',
             'domain': [('name', 'in', self.book_names.split(','))],
         }
-
