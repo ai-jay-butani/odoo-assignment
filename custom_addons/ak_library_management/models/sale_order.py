@@ -9,8 +9,8 @@ class SaleOrder(models.Model):
     """
     _inherit = 'sale.order'
 
-    check = fields.Boolean(default=False)
-    is_approve = fields.Boolean(default=False)
+    is_check = fields.Boolean()
+    is_approve = fields.Boolean()
 
     def action_confirm(self):
         """
@@ -20,20 +20,17 @@ class SaleOrder(models.Model):
         :return: True or custom wizard
         :rtype: bool or dictionary
         """
-        if self.is_approve:
-            return super().action_confirm()
-
         low_stock_products = []
         for record in self.order_line:
             if record.product_template_id.qty_available < 5:
-                self.check = True
                 low_stock_products.append(record.product_template_id.name)
 
-        if low_stock_products:
+        if low_stock_products and not self.is_approve:
+            self.is_check = True
             message = ("Approval needed! The following books have low stock:"
                        + ','.join(low_stock_products))
             return {
-                'name': 'ValidationError',
+                'name': 'Sale Order Warning',
                 'type': 'ir.actions.act_window',
                 'res_model': 'sale.order.wizard',
                 'view_mode': 'form',
@@ -48,14 +45,14 @@ class SaleOrder(models.Model):
         if manager than approve is true and confirm is false and only manager is Enable this button
         """
         if self.env.user.is_manager:
-            self.check = False
+            self.is_check = False
             self.is_approve = True
 
     def action_reject(self):
         """
         user can reject the quotation(s)
         """
-        self.check = False
+        self.is_check = False
         return super().action_cancel()
 
     def action_cancel(self):

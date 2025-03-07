@@ -124,14 +124,3 @@ class ProductTemplate(models.Model):
         """
         self.write({'status': 'returned'})
 
-    def _automated_action_duplicate_product_name(self):
-        """
-        raise validation error if product name is duplicate so we can not use same product name.
-        return: ValidationError
-        """
-        if self.name:
-            existing_product = self.env['product.template'].search([
-                ('id', '!=', self.id), ('name', '=', self.name)])
-            if existing_product:
-                raise UserError("You can't have the same Product Name twice!  "
-                                "(" + self.name + ")")

@@ -52,11 +52,4 @@
         <field name="code">record._automated_action_duplicate_product_name()</field>
     </record>
 
-    <!--product template automated action-->
-    <record id="automated_action_product_template" model="base.automation">
-        <field name="name">Duplicate Name Check</field>
-        <field name="model_id" ref="model_product_template"/>
-        <field name="trigger">on_create_or_write</field>
-        <field name="action_server_ids" eval="[(4,ref('server_actions_product_template'))]"/>
-    </record>
 </odoo>

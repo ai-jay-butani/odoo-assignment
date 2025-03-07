@@ -78,9 +78,10 @@ class BorrowTransactionHistory(models.Model):
 
         for rec in self.book_ids:
             if rec.qty_available:
-                product_id = self.env['product.product'].search([('name', '=', rec.name)])
-                loc = self.env['stock.quant'].search([('product_id.name', '=', rec.name)])
-                self.env['stock.quant']._update_available_quantity(product_id, loc[0].location_id,
+                product_id = self.env['product.product'].search([('name', '=', rec.name),
+                                                    ('default_code','=',rec.default_code)])
+                loc = self.env['stock.quant'].search([('product_id.name', '=', rec.name)],limit=1)
+                self.env['stock.quant']._update_available_quantity(product_id, loc.location_id,
                                                                    quantity=-1)
 
     def reminder_borrow_book(self):
