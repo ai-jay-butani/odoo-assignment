@@ -61,13 +61,13 @@ class BorrowTransactionHistory(models.Model):
             return self.custom_wizard(message)
 
         if len(self.book_ids) > 5:
-            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)])
+            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)], order='id desc', offset=1)
             books_name = []
-            [books_name.append(book.name) for rec in search_recd[:-1]
+            [books_name.append(book.name) for rec in search_recd
              for book in rec.book_ids if book.name not in books_name]
 
             if books_name:
-                message = (f"Customer already has [{len(search_recd) - 1}] open "
+                message = (f"Customer already has [{len(search_recd)}] open "
                            f"borrow transactions with {books_name} books. "
                            f"Are you sure you want to borrow more books?")
                 return self.custom_wizard(message)

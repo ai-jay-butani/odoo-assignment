@@ -12,3 +12,7 @@
 - changes in condition of sale order action confirm
 - change in search method of borrow transaction model
 - delete automated action(duplicate name) from product template
+
+## [18.0.1.0.2] - 2025-03-07 | Borrow Book Requirement
+
+- add limit, order and offset in search method instead of indexing
