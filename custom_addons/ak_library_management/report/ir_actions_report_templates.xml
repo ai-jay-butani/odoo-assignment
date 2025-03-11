@@ -1,0 +1,165 @@
+<odoo>
+    <!--customize base external layout-->
+    <template id="external_layout_inherit_header_footer" inherit_id="web.external_layout_standard">
+        <xpath expr="//div[@name='company_address']" position="attributes">
+            <attribute name="t-if">not doc</attribute>
+        </xpath>
+        <xpath expr="//img" position="attributes">
+            <attribute name="style">width:200px;height:600px</attribute>
+        </xpath>
+        <xpath expr="//img" position="after">
+            <div t-if="doc" class="align-items-end justify-content-end">
+                <ul class="list-unstyled" name="company_address_list">
+                    <li>
+                        <span t-field="company.partner_id" t-options='{"widget": "contact", "fields": ["address", "email", "phone"], "no_marker": true}'>
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </xpath>
+        <xpath expr="//div[@t-field='company.report_footer']" position="attributes">
+            <attribute name="t-if">not doc</attribute>
+        </xpath>
+        <xpath expr="//div[@t-field='company.report_footer']" position="after">
+            <div id="website_footer" class="flex-grow-1 text-start me-2" t-if="doc">
+                <span t-out="company.website"/>
+            </div>
+        </xpath>
+    </template>
+
+    <!--Dynamic report article-->
+    <template id="report_library_document">
+        <t t-call="web.external_layout">
+            <div class="page">
+                <div class="oe_structure"/>
+                <h3>
+                    <span t-field="doc.name"/>
+                    <span>#</span>
+                    <span t-field="doc.id"/>
+                </h3>
+
+                <div class="row" style="margin-top:10px" id="library information">
+                    <div t-if="doc.librarian_id" class="col" name="librarian_name">
+                        <strong>Librarian Name</strong>
+                        <div t-out="doc.librarian_id.name"/>
+                    </div>
+                    <div class="col" name="current_date">
+                        <strong>Date</strong>
+                        <t t-set="c_date" t-value="datetime.datetime.now()"/>
+                        <div t-out="c_date.strftime('%d/%b/%Y')"/>
+                    </div>
+                    <div class="col" name="borrow_book_count">
+                        <strong>Total Borrowed Books</strong>
+                        <div t-out="round(float(doc.count_borrowed_book),1)"/>
+                    </div>
+                    <div t-if="doc.location" class="col" name="library_location">
+                        <strong>Location</strong>
+                        <div t-out="doc.location"/>
+                    </div>
+                </div>
+
+                <table class="o_has_total_table table o_main_table" style="margin-top:15px">
+                    <tr>
+                        <th name="th_book" class="text-start text-nowrap">Book</th>
+                        <th name="th_price" class="text-start text-nowrap">Price</th>
+                        <th name="th_date" class="text-start text-nowrap">Published Date</th>
+                        <th name="th_author" class="text-start text-nowrap">Author</th>
+                    </tr>
+
+                    <tbody class="library_tbody">
+                        <t t-foreach="doc.book_ids" t-as="book">
+                            <tr>
+                                <td name="td_name">
+                                    <div t-if="book.barcode"> <strong t-field="book.barcode"/> </div>
+                                    <div t-field="book.name"/>
+                                    <div>
+                                        <strong>On Hand:</strong>
+                                        <span t-out="int(book.qty_available)"/>
+                                    </div>
+                                </td>
+                                <td name="td_price">
+                                    <span t-field="book.list_price"/>
+                                </td>
+                                <td name="td_date" >
+                                    <t t-if="book.published_date">
+                                        <t t-set="p_date" t-value="book.published_date"/>
+                                        <span t-out="p_date.strftime('%d/%b/%Y')"/>
+                                    </t>
+                                </td>
+                                <td name="td_author" >
+                                    <t t-if="book.author">
+                                        <span t-out="book.author"/>
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+                <div id="library_note" class="mt-10">
+                    <strong>Note: </strong>
+                    <span t-out="doc.notes"/>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!--custom layout of report-->
+    <template id="custom_external_layout_library_member">
+        <t t-if="not o" t-set="o" t-value="doc"/>
+
+        <t t-if="not company">
+            <!-- Multicompany -->
+            <t t-if="company_id">
+                <t t-set="company" t-value="company_id"/>
+            </t>
+            <t t-elif="o and 'company_id' in o and o.company_id.sudo()">
+                <t t-set="company" t-value="o.company_id.sudo()"/>
+            </t>
+            <t t-else="else">
+                <t t-set="company" t-value="res_company"/>
+            </t>
+        </t>
+
+        <div t-attf-class="header o_company_#{company.id}_layout">
+            <div t-if="company" class="text-center">
+                <h3>
+                    <span t-out="company.partner_id.name"/>
+                </h3>
+            </div>
+        </div>
+
+        <div t-attf-class="article o_company_#{company.id}_layout">
+            <strong>Member Details:</strong>
+            <br/>
+            <b>Name:</b> <t t-out="o.member_id.name or ''"/> <br/>
+            <b>Email:</b> <t t-out="o.member_id.email or ''"/><br/>
+            <b>Phone No:</b> <t t-out="o.phone or ''"/><br/>
+            <b>Membership Start Date:</b> <t t-out="o.membership_date or ''"/>
+            <br/>
+        </div>
+
+        <div t-attf-class="footer o_company_#{company.id}_layout">
+            <div t-if="company" class="text-center">
+                <span t-out="company.partner_id.website"/>
+            </div>
+        </div>
+    </template>
+
+    <!--html container of dynamic report-->
+    <template id="report_library_management">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ak_library_management.report_library_document"/>
+            </t>
+        </t>
+    </template>
+
+    <!--html container of custom library member report-->
+    <template id="report_library_member">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="ak_library_management.custom_external_layout_library_member"/>
+            </t>
+        </t>
+    </template>
+</odoo>

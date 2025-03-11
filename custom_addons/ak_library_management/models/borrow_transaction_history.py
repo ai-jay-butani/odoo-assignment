@@ -79,8 +79,8 @@ class BorrowTransactionHistory(models.Model):
         for rec in self.book_ids:
             if rec.qty_available:
                 product_id = self.env['product.product'].search([('name', '=', rec.name),
-                                                    ('default_code','=',rec.default_code)])
-                loc = self.env['stock.quant'].search([('product_id.name', '=', rec.name)],limit=1)
+                                                                 ('default_code', '=', rec.default_code)])
+                loc = self.env['stock.quant'].search([('product_id.name', '=', rec.name)], limit=1)
                 self.env['stock.quant']._update_available_quantity(product_id, loc.location_id,
                                                                    quantity=-1)
 
@@ -93,9 +93,9 @@ class BorrowTransactionHistory(models.Model):
         """
         all_recd = self.search([])
         for records in all_recd:
-            date_deadline = records.borrow_start_date + timedelta(days=2)
+            date_deadline = records.borrow_end_date - timedelta(days=2)
             check_status = [rec.status == 'borrowed' for rec in records.book_ids]
-            if (records.borrow_end_date == date_deadline and
+            if (date.today() == date_deadline and
                     any(check_status)):
                 template = self.env.ref('ak_library_management.email_template_book_reminder')
                 template.send_mail(records.id, force_send=True)

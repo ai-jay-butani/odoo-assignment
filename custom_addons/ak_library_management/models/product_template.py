@@ -123,4 +123,3 @@ class ProductTemplate(models.Model):
         return: None
         """
         self.write({'status': 'returned'})
-

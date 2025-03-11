@@ -37,7 +37,6 @@ class LibraryMembers(models.Model):
             'default_template_id': mail_template.id
         }
         if self.env.user.is_librarian:
-            print(".....send mail......")
             return {
                 'type': 'ir.actions.act_window',
                 'view_mode': 'form',

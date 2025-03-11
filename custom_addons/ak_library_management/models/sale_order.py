@@ -53,7 +53,7 @@ class SaleOrder(models.Model):
         user can reject the quotation(s)
         """
         self.is_check = False
-        return super().action_cancel()
+        self.action_cancel()
 
     def action_cancel(self):
         """

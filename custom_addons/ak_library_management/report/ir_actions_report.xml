@@ -1,0 +1,25 @@
+<odoo>
+    <!--library report action-->
+    <record id="action_report_library" model="ir.actions.report">
+        <field name="name">Library detail</field>
+        <field name="model">library.book.location</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ak_library_management.report_library_management</field>
+        <field name="report_file">ak_library_management.report_library_management</field>
+        <field name="print_report_name">'Library %s-Report' %(object.name)</field>
+        <field name="binding_model_id" ref="model_library_book_location"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <!--library member report action-->
+    <record id="action_report_library_member" model="ir.actions.report">
+        <field name="name">Member Report</field>
+        <field name="model">library.members</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ak_library_management.report_library_member</field>
+        <field name="report_file">ak_library_management.report_library_member</field>
+        <field name="print_report_name">'Library Member %s-Report' %(object.member_id.name)</field>
+        <field name="binding_model_id" ref="model_library_members"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
