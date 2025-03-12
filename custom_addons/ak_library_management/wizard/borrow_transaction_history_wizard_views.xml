@@ -9,7 +9,7 @@
                         <field name="message" readonly="1"/>
                     </group>
                     <footer>
-                        <button string="Continue" special="save" class="oe_highlight"/>
+                        <button string="Continue" type="object" name="action_continue" class="oe_highlight"/>
                         <button string="Cancel" type="object" name="action_cancel"/>
                     </footer>
                 </form>

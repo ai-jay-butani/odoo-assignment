@@ -40,7 +40,9 @@ class BorrowTransactionHistory(models.Model):
             'res_model': 'borrow.transaction.history.wizard',
             'view_mode': 'form',
             'target': 'new',
-            'context': {'default_message': message}
+            'context': {'default_message': message,
+                        'book_ids': [book.id for book in self.book_ids]
+                       }
         }
 
     def action_confirm(self):
@@ -54,7 +56,7 @@ class BorrowTransactionHistory(models.Model):
             message = "Customer is not trustworthy. Are you sure you want to continue?"
             return self.custom_wizard(message)
 
-        product_list = [rec.name for rec in self.book_ids if rec.qty_available == 0]
+        product_list = [rec.name for rec in self.book_ids if int(rec.qty_available) == 0]
         if product_list:
             message = (f"The following books are out of stock: {product_list}."
                        f" Are you sure you want to continue?")
@@ -79,7 +81,6 @@ class BorrowTransactionHistory(models.Model):
 
         for rec in self.book_ids.filtered(lambda book: book.qty_available):
             loc = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
-            print(loc)
             self.env['stock.quant']._update_available_quantity(loc.product_id, loc.location_id,
                                                                quantity=-1)
 
