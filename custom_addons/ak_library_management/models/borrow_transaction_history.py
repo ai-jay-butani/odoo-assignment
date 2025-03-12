@@ -61,7 +61,8 @@ class BorrowTransactionHistory(models.Model):
             return self.custom_wizard(message)
 
         if len(self.book_ids) > 5:
-            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)], order='id desc', offset=1)
+            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)],
+                                      order='id desc', offset=1)
             books_name = []
             [books_name.append(book.name) for rec in search_recd
              for book in rec.book_ids if book.name not in books_name]
@@ -76,13 +77,11 @@ class BorrowTransactionHistory(models.Model):
                        "borrowing more than 5 books for this customer?")
             return self.custom_wizard(message)
 
-        for rec in self.book_ids:
-            if rec.qty_available:
-                product_id = self.env['product.product'].search([('name', '=', rec.name),
-                                                                 ('default_code', '=', rec.default_code)])
-                loc = self.env['stock.quant'].search([('product_id.name', '=', rec.name)], limit=1)
-                self.env['stock.quant']._update_available_quantity(product_id, loc.location_id,
-                                                                   quantity=-1)
+        for rec in self.book_ids.filtered(lambda book: book.qty_available):
+            loc = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
+            print(loc)
+            self.env['stock.quant']._update_available_quantity(loc.product_id, loc.location_id,
+                                                               quantity=-1)
 
     def reminder_borrow_book(self):
         """
@@ -107,10 +106,10 @@ class BorrowTransactionHistory(models.Model):
         param: None
         return: Exception
         """
-        search_rec = self.search([('customer_id.id', "=", self.customer_id.id)])
-        for rec in search_rec[:-1]:
-            for book in rec.book_ids:
-                if rec.borrow_end_date < date.today() and book.status == "borrowed":
-                    raise ValidationError(f"{rec.customer_id.name} with overdue books "
-                                          f"cannot new ones until"
-                                          f" you return the overdue items.")
+        search_rec = self.search([('customer_id.id', "=", self.customer_id.id)],
+                                 order='id desc', offset=1)
+        for rec in search_rec.filtered(lambda record: record.borrow_end_date < date.today()):
+            for _ in rec.book_ids.filtered(lambda book: book.status == "borrowed"):
+                raise ValidationError(f"{rec.customer_id.name} with overdue books "
+                                      f"cannot new ones until"
+                                      f" you return the overdue items.")

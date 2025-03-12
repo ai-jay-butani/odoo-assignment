@@ -21,9 +21,9 @@ class SaleOrder(models.Model):
         :rtype: bool or dictionary
         """
         low_stock_products = []
-        for record in self.order_line:
-            if record.product_template_id.qty_available < 5:
-                low_stock_products.append(record.product_template_id.name)
+        for record in self.order_line.filtered(lambda x:
+                                               x.product_template_id.qty_available < 5):
+            low_stock_products.append(record.product_template_id.name)
 
         if low_stock_products and not self.is_approve:
             self.is_check = True

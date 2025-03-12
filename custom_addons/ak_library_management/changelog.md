@@ -17,7 +17,12 @@
 
 - add limit, order and offset in search method instead of indexing
 
-## [18.0.1.2.3] - 2025-03-11 | Library Report with Custom Layout
+## [18.0.1.1.3] - 2025-03-11 | Library Report with Custom Layout
 
 - add dynamic report and html container
 - add report action for both member and library location file
+
+## [18.0.1.1.4] - 2025-03-12 | Borrow Book Requirement
+
+- change the domain of decrease on hand quantity functionality
+- use the filtered method for code optimization

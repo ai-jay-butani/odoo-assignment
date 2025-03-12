@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Library Management',
-    'version': '18.0.1.2.3',
+    'version': '18.0.1.1.4',
     'author': 'Jay Butani',
     'sequence': 5,
     'summary': 'Library Management Module',
@@ -9,6 +9,8 @@
     'website': 'https://www.aktivsoftware.com',
     'data': [
         'security/ir.model.access.csv',
+        'report/ir_actions_report.xml',
+        'report/ir_actions_report_templates.xml',
         'data/ir_sequence_data.xml',
         'data/ir_cron_data.xml',
         'data/mail_template_data.xml',
@@ -27,8 +29,6 @@
         'views/res_partner_views.xml',
         'views/borrow_transaction_history_views.xml',
         'wizard/borrow_transaction_history_wizard_views.xml',
-        'report/ir_actions_report.xml',
-        'report/ir_actions_report_templates.xml'
     ],
     'depends':['sale_management','contacts','stock','base_automation'],
     'application': True,
