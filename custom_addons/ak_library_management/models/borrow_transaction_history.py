@@ -42,7 +42,7 @@ class BorrowTransactionHistory(models.Model):
             'target': 'new',
             'context': {'default_message': message,
                         'book_ids': [book.id for book in self.book_ids]
-                       }
+                        }
         }
 
     def action_confirm(self):
