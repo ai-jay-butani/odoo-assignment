@@ -39,3 +39,8 @@
 - add warehouse xml and py file
 - add library module in settings and add field
 - add groups and record rules
+
+## [18.0.1.2.6] - 2025-03-13 / Schedule, server and automated action
+
+- transfer xml side python code into py file
+- change cron job

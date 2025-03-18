@@ -17,15 +17,7 @@
         <field name="binding_model_id" ref="model_borrow_transaction_history"/>
         <field name="binding_view_types">list,form</field>
         <field name="state">code</field>
-        <field name="code">
-            for rec in records:
-                for book in rec.book_ids:
-                    env['bus.bus']._sendone(rec.customer_id, 'simple_notification', {
-                    'type': 'warning',
-                    'message': f"{rec.customer_id.name} your return book has been recorded.",
-                    })
-                    book.mark_as_returned()
-        </field>
+        <field name="code">model.change_book_status()</field>
     </record>
 
     <!--borrow transaction history server action-->
@@ -33,7 +25,7 @@
         <field name="name">Due Date Check</field>
         <field name="model_id" ref="model_borrow_transaction_history"/>
         <field name="state">code</field>
-        <field name="code">record.automated_action()</field>
+        <field name="code">record.overdue_borrowed_books()</field>
     </record>
 
     <!--borrow transaction history automated action-->

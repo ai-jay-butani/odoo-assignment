@@ -126,7 +126,7 @@ class BorrowTransactionHistory(models.Model):
                 template = self.env.ref('ak_library_management.email_template_book_reminder')
                 template.send_mail(records.id, force_send=True)
 
-    def automated_action(self):
+    def overdue_borrowed_books(self):
         """
         If customer has not return book before due date so that customer can't borrow
         more books.
@@ -140,3 +140,17 @@ class BorrowTransactionHistory(models.Model):
                 raise ValidationError(f"{rec.customer_id.name} with overdue books "
                                       f"cannot new ones until"
                                       f" you return the overdue items.")
+
+    def change_book_status(self):
+        """
+        change the book status from borrowed to returned using server action
+        param: None
+        rtype: None
+        """
+        for rec in self.search([('book_ids.status','=','borrowed')]):
+            for book in rec.book_ids:
+                self.env['bus.bus']._sendone(rec.customer_id, 'simple_notification', {
+                    'type': 'warning',
+                    'message': f"{rec.customer_id.name} your return book has been recorded.",
+                })
+                book.mark_as_returned()
