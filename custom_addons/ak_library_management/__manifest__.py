@@ -8,6 +8,7 @@
     'description': "LMS",
     'website': 'https://www.aktivsoftware.com',
     'data': [
+        'security/library_security.xml',
         'security/ir.model.access.csv',
         'report/ir_actions_report.xml',
         'report/ir_actions_report_templates.xml',
@@ -29,8 +30,10 @@
         'views/res_partner_views.xml',
         'views/borrow_transaction_history_views.xml',
         'wizard/borrow_transaction_history_wizard_views.xml',
+        'views/stock_warehouse_views.xml',
+        'views/res_config_settings_views.xml'
     ],
-    'depends':['sale_management','contacts','stock','base_automation'],
+    'depends':['sale_management','contacts','stock','base_automation','hr'],
     'application': True,
     'license': 'LGPL-3',
 }

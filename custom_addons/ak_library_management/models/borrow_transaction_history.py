@@ -14,18 +14,31 @@ class BorrowTransactionHistory(models.Model):
     _description = 'borrow transaction history'
     _rec_name = 'customer_id'
 
+    cnt = fields.Integer(default=0, string='count')
     customer_id = fields.Many2one(comodel_name='res.partner', string='Customer', required=True)
     book_ids = fields.Many2many(comodel_name='product.template', string='Books')
     borrow_start_date = fields.Date(string="Start Date", default=date.today())
     borrow_end_date = fields.Date(string='End Date', required=True)
     deposit_amount = fields.Float(string="Deposit")
     is_member = fields.Boolean(related='customer_id.is_member')
+    is_active = fields.Boolean(compute='_compute_active_transaction', store=True)
+
+    @api.depends('borrow_end_date')
+    def _compute_active_transaction(self):
+        """
+        check the transaction is active or not and set true or false in boolean field
+        param: None
+        rtype: None
+        """
+        for rec in self.search([]):
+            rec.is_active = rec.borrow_end_date >= date.today()
 
     @api.constrains('borrow_start_date', 'borrow_end_date')
     def _check_end_date(self):
         """
         check end date is grater than start date or not.
-        param: none
+        param: None
+        rtype: None
         """
         if self.borrow_end_date < self.borrow_start_date:
             raise ValidationError("Borrow end date should be higher than start date.")
@@ -33,7 +46,8 @@ class BorrowTransactionHistory(models.Model):
     def custom_wizard(self, message):
         """
         repeated part in code when we check any condition then return custom wizard.
-        param: none
+        param: message(str)
+        rtype: dict
         """
         return {
             'type': 'ir.actions.act_window',
@@ -41,26 +55,26 @@ class BorrowTransactionHistory(models.Model):
             'view_mode': 'form',
             'target': 'new',
             'context': {'default_message': message,
-                        'book_ids': [book.id for book in self.book_ids]
-                        }
+                        'book_ids': [book.id for book in self.book_ids],
+                       }
         }
 
-    def action_confirm(self):
+    def check_confirm(self):
         """
-        when we click confirm button then check conditions like customer is trustworthy or not,
+        check conditions like customer is trustworthy or not,
         check product quantity,check books count
-        param: none
-        return: wizard
+        param: None
+        rtype: None
         """
         if self.customer_id.not_trust_worthy:
             message = "Customer is not trustworthy. Are you sure you want to continue?"
-            return self.custom_wizard(message)
+            yield self.custom_wizard(message)
 
         product_list = [rec.name for rec in self.book_ids if int(rec.qty_available) == 0]
         if product_list:
             message = (f"The following books are out of stock: {product_list}."
                        f" Are you sure you want to continue?")
-            return self.custom_wizard(message)
+            yield self.custom_wizard(message)
 
         if len(self.book_ids) > 5:
             search_recd = self.search([('customer_id.id', "=", self.customer_id.id)],
@@ -73,23 +87,35 @@ class BorrowTransactionHistory(models.Model):
                 message = (f"Customer already has [{len(search_recd)}] open "
                            f"borrow transactions with {books_name} books. "
                            f"Are you sure you want to borrow more books?")
-                return self.custom_wizard(message)
+                yield self.custom_wizard(message)
+            else:
+                message = ("Are you sure you want to allow "
+                           "borrowing more than 5 books for this customer?")
+                yield self.custom_wizard(message)
 
-            message = ("Are you sure you want to allow "
-                       "borrowing more than 5 books for this customer?")
-            return self.custom_wizard(message)
-
-        for rec in self.book_ids.filtered(lambda book: book.qty_available):
-            loc = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
-            self.env['stock.quant']._update_available_quantity(loc.product_id, loc.location_id,
-                                                               quantity=-1)
+    def action_custom_confirm(self):
+        """
+        when we click confirm button then call check_confirm method and check all validation
+        and decrease on hand quantity by 1.
+        param: None
+        rtype: dict
+        """
+        action = self.check_confirm()
+        list_action = list(action)
+        if self.cnt > len(list_action) - 1:
+            for rec in self.book_ids.filtered(lambda book: book.qty_available):
+                loc = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
+                self.env['stock.quant']._update_available_quantity(loc.product_id, loc.location_id,
+                                                                   quantity=-1)
+        else:
+            return list_action[self.cnt]
 
     def reminder_borrow_book(self):
         """
         Borrow book remainder for customer if the borrow end date is within next 2 days and
         send the mail to the customer
         param: None
-        return: None
+        rtype: None
         """
         all_recd = self.search([])
         for records in all_recd:
@@ -105,7 +131,7 @@ class BorrowTransactionHistory(models.Model):
         If customer has not return book before due date so that customer can't borrow
         more books.
         param: None
-        return: Exception
+        rtype: dict(exception)
         """
         search_rec = self.search([('customer_id.id', "=", self.customer_id.id)],
                                  order='id desc', offset=1)

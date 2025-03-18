@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from itertools import repeat
 
 from odoo import models, fields
 
@@ -15,17 +16,18 @@ class BorrowTransactionHistory(models.TransientModel):
     def action_cancel(self):
         """
         when click cancel button then current record is deleted.
+        param: None
+        rtype: None
         """
-        rec_id = self.env.context.get('active_id')
-        self.env["borrow.transaction.history"].browse(rec_id).unlink()
+        rec = self.env["borrow.transaction.history"].search([], order='id desc', limit=1)
+        rec.unlink()
 
     def action_continue(self):
         """
-        if whenever click continue button then decrease on hand quantity by one.
+        if whenever click continue button then check other validation from that record.
+        param: None
+        rtype: function
         """
-        books = self.env.context.get('book_ids')
-        for rec in self.env["product.template"].browse(books).filtered(lambda book:
-                                                                       book.qty_available):
-            loc = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
-            self.env['stock.quant']._update_available_quantity(loc.product_id, loc.location_id,
-                                                               quantity=-1)
+        rec = self.env["borrow.transaction.history"].search([], order='id desc', limit=1)
+        rec.cnt += 1
+        return rec.action_custom_confirm()

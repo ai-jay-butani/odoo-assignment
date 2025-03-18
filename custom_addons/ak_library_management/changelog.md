@@ -27,3 +27,15 @@
 - change the domain of decrease on hand quantity functionality
 - use the filtered method for code optimization
 - change in continue button functionality 
+
+## [18.0.1.1.5] - 2025-03-18 | Borrow Book Requirement
+
+- change the validation error functionality
+- add the integer field for count
+- add yield instead of return
+
+## [18.0.1.2.5] - 2025-03-13 / Groups and access rights
+
+- add warehouse xml and py file
+- add library module in settings and add field
+- add groups and record rules
