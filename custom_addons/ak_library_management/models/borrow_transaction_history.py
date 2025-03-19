@@ -23,20 +23,23 @@ class BorrowTransactionHistory(models.Model):
     deposit_amount = fields.Float(string="Deposit")
     is_member = fields.Boolean(related='customer_id.is_member')
     is_active = fields.Boolean(compute='_compute_active_transaction', store=True)
-    # is_higher_than_limit = fields.Boolean(compute='_compute_more_than_borrow_limit',default=False)
+    is_higher_than_limit = fields.Boolean(compute='_compute_more_than_borrow_limit',store=True)
 
-    # @api.depends('book_ids')
-    # def _compute_more_than_borrow_limit(self):
-    #     search_recd = self.search([('customer_id.id', "=", self.customer_id.id)])
-    #     print(search_recd)
-    #     books_name = [book.name for rec in search_recd
-    #                     for book in rec.book_ids]
-    #     print(books_name)
-    #     print(self.borrow_limit)
-    #     if len(books_name) > self.borrow_limit:
-    #         self.is_higher_than_limit = True
-    #     else:
-    #         self.is_higher_than_limit = False
+    @api.depends('book_ids')
+    def _compute_more_than_borrow_limit(self):
+        """
+        check previously customer has open borrow transaction or not and check borrow limit
+        customer can't borrow more than borrow limit.
+        param: None
+        rtype: None
+        """
+        for rec in self:
+            rec.is_higher_than_limit = False
+            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)])
+            books_name = [book.name for rec in search_recd
+                            for book in rec.book_ids]
+            if len(books_name) > rec.borrow_limit:
+                rec.is_higher_than_limit = True
 
     @api.depends('borrow_end_date')
     def _compute_active_transaction(self):
@@ -45,7 +48,7 @@ class BorrowTransactionHistory(models.Model):
         param: None
         rtype: None
         """
-        for rec in self.search([]):
+        for rec in self:
             rec.is_active = rec.borrow_end_date >= date.today()
 
     @api.constrains('borrow_start_date', 'borrow_end_date')

@@ -50,3 +50,9 @@
 - add schedule action for overdue books
 - optimize the code and change the domain of search method
 - change the schedule action of remainder
+
+## [18.0.1.2.8] - 2025-03-19 | Groups and access rights
+
+- add record rules for restrict access for some users
+- add two compute fields
+- changes in access rights csv file
