@@ -13,6 +13,7 @@ class BorrowTransactionHistory(models.Model):
     _name = 'borrow.transaction.history'
     _description = 'borrow transaction history'
     _rec_name = 'customer_id'
+    _inherit = 'res.config.settings'
 
     cnt = fields.Integer(default=0, string='count')
     customer_id = fields.Many2one(comodel_name='res.partner', string='Customer', required=True)
@@ -22,6 +23,20 @@ class BorrowTransactionHistory(models.Model):
     deposit_amount = fields.Float(string="Deposit")
     is_member = fields.Boolean(related='customer_id.is_member')
     is_active = fields.Boolean(compute='_compute_active_transaction', store=True)
+    # is_higher_than_limit = fields.Boolean(compute='_compute_more_than_borrow_limit',default=False)
+
+    # @api.depends('book_ids')
+    # def _compute_more_than_borrow_limit(self):
+    #     search_recd = self.search([('customer_id.id', "=", self.customer_id.id)])
+    #     print(search_recd)
+    #     books_name = [book.name for rec in search_recd
+    #                     for book in rec.book_ids]
+    #     print(books_name)
+    #     print(self.borrow_limit)
+    #     if len(books_name) > self.borrow_limit:
+    #         self.is_higher_than_limit = True
+    #     else:
+    #         self.is_higher_than_limit = False
 
     @api.depends('borrow_end_date')
     def _compute_active_transaction(self):
@@ -110,6 +125,20 @@ class BorrowTransactionHistory(models.Model):
         else:
             return list_action[self.cnt]
 
+    def _schedule_overdue_books(self):
+        """
+        Schedule action for overdue books and send mail to all that customer has not return the
+        book after due date.
+        param: None
+        rtype: None
+        """
+        search_rec = self.search([('borrow_end_date', '<', date.today()),
+                                  ('book_ids.status', '=', 'borrowed')])
+
+        for rec in search_rec:
+            template = self.env.ref('ak_library_management.email_template_book_overdue')
+            template.send_mail(rec.id, force_send=True)
+
     def reminder_borrow_book(self):
         """
         Borrow book remainder for customer if the borrow end date is within next 2 days and
@@ -117,14 +146,11 @@ class BorrowTransactionHistory(models.Model):
         param: None
         rtype: None
         """
-        all_recd = self.search([])
-        for records in all_recd:
-            date_deadline = records.borrow_end_date - timedelta(days=2)
-            check_status = [rec.status == 'borrowed' for rec in records.book_ids]
-            if (date.today() == date_deadline and
-                    any(check_status)):
-                template = self.env.ref('ak_library_management.email_template_book_reminder')
-                template.send_mail(records.id, force_send=True)
+        date_deadline = date.today() + timedelta(days=2)
+        for records in self.search([('borrow_end_date','=',date_deadline),
+                                    ('book_ids.status','=','borrowed')]):
+            template = self.env.ref('ak_library_management.email_template_book_reminder')
+            template.send_mail(records.id, force_send=True)
 
     def overdue_borrowed_books(self):
         """
@@ -133,13 +159,13 @@ class BorrowTransactionHistory(models.Model):
         param: None
         rtype: dict(exception)
         """
-        search_rec = self.search([('customer_id.id', "=", self.customer_id.id)],
-                                 order='id desc', offset=1)
-        for rec in search_rec.filtered(lambda record: record.borrow_end_date < date.today()):
-            for _ in rec.book_ids.filtered(lambda book: book.status == "borrowed"):
-                raise ValidationError(f"{rec.customer_id.name} with overdue books "
-                                      f"cannot new ones until"
-                                      f" you return the overdue items.")
+        search_rec = self.search([('customer_id.id', "=", self.customer_id.id),
+                                  ('borrow_end_date','<',date.today()),
+                                  ('book_ids.status','=','borrowed')])
+        for rec in search_rec:
+            raise ValidationError(f"{rec.customer_id.name} with overdue books "
+                                  f"cannot new ones until"
+                                  f" you return the overdue items.")
 
     def change_book_status(self):
         """

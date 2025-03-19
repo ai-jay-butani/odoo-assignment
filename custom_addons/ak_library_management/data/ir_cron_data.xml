@@ -1,11 +1,21 @@
 <odoo>
 
-     <!--borrow transaction history schedule action-->
-    <record id="ir_cron_borrow_transaction_history" model="ir.cron">
+     <!--borrow transaction history remainder schedule action-->
+    <record id="ir_cron_remainder_borrow_transaction_history" model="ir.cron">
         <field name="name">Borrow Book Reminder</field>
         <field name="model_id" ref="model_borrow_transaction_history"/>
         <field name="state">code</field>
         <field name="code">model.reminder_borrow_book()</field>
+        <field name='interval_number'>1</field>
+        <field name='interval_type'>days</field>
+    </record>
+
+    <!--borrow transaction history overdue schedule action-->
+    <record id="ir_cron_overdue_borrow_transaction_history" model="ir.cron">
+        <field name="name">Borrow Book overdue</field>
+        <field name="model_id" ref="model_borrow_transaction_history"/>
+        <field name="state">code</field>
+        <field name="code">model._schedule_overdue_books()</field>
         <field name='interval_number'>1</field>
         <field name='interval_type'>weeks</field>
     </record>

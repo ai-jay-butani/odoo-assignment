@@ -55,4 +55,22 @@
         <field name="domain_force">[('is_active','=',True)]</field>
         <field name="groups" eval="[(4,ref('ak_library_management.group_library_worker'))]"/>
     </record>
+
+<!--    <record id="restrict_assistant_check_financial_details" model="ir.rule">-->
+<!--        <field name="name">Assistants cannot view financial details of members</field>-->
+<!--        <field name="model_id" ref="model_borrow_transaction_history"/>-->
+<!--        <field name="domain_force">[('deposit_amount','!=',True)]</field>-->
+<!--        <field name="groups" eval="[(4,ref('ak_library_management.group_library_assistant'))]"/>-->
+<!--    </record>-->
+
+<!--    <record id="check_borrow_limit" model="ir.rule">-->
+<!--        <field name="name">Enforce a borrowing limit of 5 books per member</field>-->
+<!--        <field name="model_id" ref="model_borrow_transaction_history"/>-->
+<!--        <field name="perm_read">0</field>-->
+<!--        <field name="perm_write">0</field>-->
+<!--        <field name="perm_create">1</field>-->
+<!--        <field name="perm_unlink">0</field>-->
+<!--        <field name="domain_force">[('is_higher_than_limit','=',True)]</field>-->
+<!--        <field name="groups" eval="[(4,ref('ak_library_management.group_library_worker'))]"/>-->
+<!--    </record>-->
 </odoo>

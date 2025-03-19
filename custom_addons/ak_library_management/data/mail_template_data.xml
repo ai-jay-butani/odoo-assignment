@@ -27,6 +27,30 @@
             </field>
         </record>
 
+        <!--mail template for book overdue-->
+        <record id="email_template_book_overdue" model="mail.template">
+            <field name="name">Library: Book overdue</field>
+            <field name="model_id" ref="ak_library_management.model_borrow_transaction_history"/>
+            <field name="subject">Overdue Book</field>
+            <field name="email_from">{{ user.email_formatted }}</field>
+            <field name="partner_to">{{ object.customer_id.id }}</field>
+             <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear,
+                        <t t-out="object.customer_id.name or ''"/>
+                        <br/>
+                        Your overdue book is
+                        <p style="font-weight: bold">Title:<t t-out="[book.name for book in object.book_ids]"/>
+                        </p>
+                        <t/> so please returned the above books.
+                        <br/>
+                        Thank You.
+                    </p>
+                </div>
+            </field>
+        </record>
+
         <!--mail template for renew membership-->
         <record id="email_template_renewal_membership" model="mail.template">
             <field name="name">Library: Renewal Membership</field>

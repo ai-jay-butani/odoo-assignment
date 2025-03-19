@@ -34,13 +34,19 @@
 - add the integer field for count
 - add yield instead of return
 
-## [18.0.1.2.5] - 2025-03-13 / Groups and access rights
+## [18.0.1.2.5] - 2025-03-18 | Groups and access rights
 
 - add warehouse xml and py file
 - add library module in settings and add field
 - add groups and record rules
 
-## [18.0.1.2.6] - 2025-03-13 / Schedule, server and automated action
+## [18.0.1.2.6] - 2025-03-18 | Schedule, server and automated action
 
 - transfer xml side python code into py file
 - change cron job
+
+## [18.0.1.2.7] - 2025-03-19 | mail template, mail compose wizard, attach report in mail template
+
+- add schedule action for overdue books
+- optimize the code and change the domain of search method
+- change the schedule action of remainder
