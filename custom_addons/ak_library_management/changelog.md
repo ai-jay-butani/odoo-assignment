@@ -56,3 +56,9 @@
 - add record rules for restrict access for some users
 - add two compute fields
 - changes in access rights csv file
+
+## [18.0.1.3.8] - 2025-03-25 | Modify base invoice report
+
+- add report template xml file
+- inherit base invoice report action
+- change field type

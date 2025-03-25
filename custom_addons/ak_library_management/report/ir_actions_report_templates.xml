@@ -145,6 +145,16 @@
         </div>
     </template>
 
+
+<!--    &lt;!&ndash;html container of invoice dynamic report&ndash;&gt;-->
+<!--    <template id="report_custom_invoice">-->
+<!--        <t t-call="web.html_container">-->
+<!--            <t t-foreach="docs" t-as="doc">-->
+<!--                <t t-call="ak_library_management.report_custom_invoice_document"/>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </template>-->
+
     <!--html container of dynamic report-->
     <template id="report_library_management">
         <t t-call="web.html_container">

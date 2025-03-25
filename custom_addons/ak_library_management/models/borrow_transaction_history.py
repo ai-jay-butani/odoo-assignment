@@ -13,7 +13,6 @@ class BorrowTransactionHistory(models.Model):
     _name = 'borrow.transaction.history'
     _description = 'borrow transaction history'
     _rec_name = 'customer_id'
-    _inherit = 'res.config.settings'
 
     cnt = fields.Integer(default=0, string='count')
     customer_id = fields.Many2one(comodel_name='res.partner', string='Customer', required=True)
@@ -23,7 +22,7 @@ class BorrowTransactionHistory(models.Model):
     deposit_amount = fields.Float(string="Deposit")
     is_member = fields.Boolean(related='customer_id.is_member')
     is_active = fields.Boolean(compute='_compute_active_transaction', store=True)
-    is_higher_than_limit = fields.Boolean(compute='_compute_more_than_borrow_limit',store=True)
+    is_higher_than_limit = fields.Boolean(compute='_compute_more_than_borrow_limit', store=True)
 
     @api.depends('book_ids')
     def _compute_more_than_borrow_limit(self):
@@ -35,10 +34,11 @@ class BorrowTransactionHistory(models.Model):
         """
         for rec in self:
             rec.is_higher_than_limit = False
-            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)])
-            books_name = [book.name for rec in search_recd
-                            for book in rec.book_ids]
-            if len(books_name) > rec.borrow_limit:
+            borrow_transaction_ids = self.search([('customer_id.id', "=", self.customer_id.id)])
+            books_name = [book.name for rec in borrow_transaction_ids
+                          for book in rec.book_ids]
+            if len(books_name) > int(rec.env['ir.config_parameter'].
+                                             get_param('ak_library_management.borrow_limit')):
                 rec.is_higher_than_limit = True
 
     @api.depends('borrow_end_date')
@@ -74,7 +74,7 @@ class BorrowTransactionHistory(models.Model):
             'target': 'new',
             'context': {'default_message': message,
                         'book_ids': [book.id for book in self.book_ids],
-                       }
+                        }
         }
 
     def check_confirm(self):
@@ -95,14 +95,14 @@ class BorrowTransactionHistory(models.Model):
             yield self.custom_wizard(message)
 
         if len(self.book_ids) > 5:
-            search_recd = self.search([('customer_id.id', "=", self.customer_id.id)],
-                                      order='id desc', offset=1)
+            borrow_transaction_ids = self.search([('customer_id.id', "=", self.customer_id.id)],
+                                                 order='id desc', offset=1)
             books_name = []
-            [books_name.append(book.name) for rec in search_recd
+            [books_name.append(book.name) for rec in borrow_transaction_ids
              for book in rec.book_ids if book.name not in books_name]
 
             if books_name:
-                message = (f"Customer already has [{len(search_recd)}] open "
+                message = (f"Customer already has [{len(borrow_transaction_ids)}] open "
                            f"borrow transactions with {books_name} books. "
                            f"Are you sure you want to borrow more books?")
                 yield self.custom_wizard(message)
@@ -122,7 +122,7 @@ class BorrowTransactionHistory(models.Model):
         list_action = list(action)
         if self.cnt > len(list_action) - 1:
             for rec in self.book_ids.filtered(lambda book: book.qty_available):
-                loc = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
+                loc = self.env['stock.quant'].search([('psearch_recdroduct_tmpl_id.id', '=', rec.id)], limit=1)
                 self.env['stock.quant']._update_available_quantity(loc.product_id, loc.location_id,
                                                                    quantity=-1)
         else:
@@ -135,10 +135,10 @@ class BorrowTransactionHistory(models.Model):
         param: None
         rtype: None
         """
-        search_rec = self.search([('borrow_end_date', '<', date.today()),
-                                  ('book_ids.status', '=', 'borrowed')])
+        borrow_transaction_ids = self.search([('borrow_end_date', '<', date.today()),
+                                              ('book_ids.status', '=', 'borrowed')])
 
-        for rec in search_rec:
+        for rec in borrow_transaction_ids:
             template = self.env.ref('ak_library_management.email_template_book_overdue')
             template.send_mail(rec.id, force_send=True)
 
@@ -150,8 +150,8 @@ class BorrowTransactionHistory(models.Model):
         rtype: None
         """
         date_deadline = date.today() + timedelta(days=2)
-        for records in self.search([('borrow_end_date','=',date_deadline),
-                                    ('book_ids.status','=','borrowed')]):
+        for records in self.search([('borrow_end_date', '=', date_deadline),
+                                    ('book_ids.status', '=', 'borrowed')]):
             template = self.env.ref('ak_library_management.email_template_book_reminder')
             template.send_mail(records.id, force_send=True)
 
@@ -162,10 +162,10 @@ class BorrowTransactionHistory(models.Model):
         param: None
         rtype: dict(exception)
         """
-        search_rec = self.search([('customer_id.id', "=", self.customer_id.id),
-                                  ('borrow_end_date','<',date.today()),
-                                  ('book_ids.status','=','borrowed')])
-        for rec in search_rec:
+        borrow_transaction_ids = self.search([('customer_id.id', "=", self.customer_id.id),
+                                              ('borrow_end_date', '<', date.today()),
+                                              ('book_ids.status', '=', 'borrowed')])
+        for rec in borrow_transaction_ids:
             raise ValidationError(f"{rec.customer_id.name} with overdue books "
                                   f"cannot new ones until"
                                   f" you return the overdue items.")
@@ -176,7 +176,7 @@ class BorrowTransactionHistory(models.Model):
         param: None
         rtype: None
         """
-        for rec in self.search([('book_ids.status','=','borrowed')]):
+        for rec in self.search([('book_ids.status', '=', 'borrowed')]):
             for book in rec.book_ids:
                 self.env['bus.bus']._sendone(rec.customer_id, 'simple_notification', {
                     'type': 'warning',

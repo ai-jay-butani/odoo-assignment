@@ -12,6 +12,7 @@
         'security/ir.model.access.csv',
         'report/ir_actions_report.xml',
         'report/ir_actions_report_templates.xml',
+        'report/report_custom_invoice.xml',
         'data/ir_sequence_data.xml',
         'data/ir_cron_data.xml',
         'data/mail_template_data.xml',
@@ -31,7 +32,8 @@
         'views/borrow_transaction_history_views.xml',
         'wizard/borrow_transaction_history_wizard_views.xml',
         'views/stock_warehouse_views.xml',
-        'views/res_config_settings_views.xml'
+        'views/res_config_settings_views.xml',
+        'views/res_partner_kanban_template.xml'
     ],
     'depends':['sale_management','contacts','stock','base_automation','hr'],
     'application': True,
