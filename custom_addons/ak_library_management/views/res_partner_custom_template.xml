@@ -1,0 +1,42 @@
+<odoo>
+    <template id="contact_kanban_template">
+        <t t-call="website.layout">
+            <div class="contacts_page">
+                <div class="container">
+                    <div class="row mt-2 mb-2">
+                        <t t-foreach="records" t-as="record">
+                            <div class="col-md-6 col-lg-4 mt-1 position-relative mb-1">
+                                <div class="card cursor-pointer flex-row pe-5 contact-card"
+                                    t-att-data-contact-slug="record.contact_slug">
+                                    <t t-set="id" t-value="record.id"/>
+                                    <img t-attf-src='web/image/res.partner/#{id}/avatar_128'
+                                         class="card-img-left" style="height:120px; width:120px;"
+                                         loading='lazy' alt="contact image"/>
+                                    <div class="card-body">
+                                        <h5 class="card-title"><t t-out="record.name"/></h5>
+                                        <p class="card-text text-truncate" style="font-size:12px"><t t-out="record.email"/></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="contact_detail_form_template">
+        <t t-call="website.layout">
+            <div class="oe_structure">
+                <div class="container">
+                    <div class="card mb-2 mt-2">
+                        <div class="card-body">
+                            <h5><t t-out="contact.name"/></h5>
+                            <a class="btn btn-primary mb-2" href="/contacts" role="button">Back</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

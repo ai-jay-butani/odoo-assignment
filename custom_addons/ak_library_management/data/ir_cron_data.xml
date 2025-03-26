@@ -5,7 +5,7 @@
         <field name="name">Borrow Book Reminder</field>
         <field name="model_id" ref="model_borrow_transaction_history"/>
         <field name="state">code</field>
-        <field name="code">model.reminder_borrow_book()</field>
+        <field name="code">model.action_reminder_borrow_book()</field>
         <field name='interval_number'>1</field>
         <field name='interval_type'>days</field>
     </record>
@@ -27,7 +27,7 @@
         <field name="binding_model_id" ref="model_borrow_transaction_history"/>
         <field name="binding_view_types">list,form</field>
         <field name="state">code</field>
-        <field name="code">model.change_book_status()</field>
+        <field name="code">model.action_change_borrowed_book_status()</field>
     </record>
 
     <!--borrow transaction history server action-->
@@ -35,7 +35,7 @@
         <field name="name">Due Date Check</field>
         <field name="model_id" ref="model_borrow_transaction_history"/>
         <field name="state">code</field>
-        <field name="code">record.overdue_borrowed_books()</field>
+        <field name="code">record.action_overdue_borrowed_books()</field>
     </record>
 
     <!--borrow transaction history automated action-->

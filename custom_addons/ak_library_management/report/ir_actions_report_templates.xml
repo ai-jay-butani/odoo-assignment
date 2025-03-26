@@ -2,13 +2,13 @@
     <!--customize base external layout-->
     <template id="external_layout_inherit_header_footer" inherit_id="web.external_layout_standard">
         <xpath expr="//div[@name='company_address']" position="attributes">
-            <attribute name="t-if">not doc</attribute>
+            <attribute name="t-if">not doc._name == 'library.book.location'</attribute>
         </xpath>
         <xpath expr="//img" position="attributes">
             <attribute name="style">width:200px;height:600px</attribute>
         </xpath>
         <xpath expr="//img" position="after">
-            <div t-if="doc" class="align-items-end justify-content-end">
+            <div t-if="doc and doc._name == 'library.book.location'" class="align-items-end justify-content-end">
                 <ul class="list-unstyled" name="company_address_list">
                     <li>
                         <span t-field="company.partner_id" t-options='{"widget": "contact", "fields": ["address", "email", "phone"], "no_marker": true}'>
@@ -18,10 +18,10 @@
             </div>
         </xpath>
         <xpath expr="//div[@t-field='company.report_footer']" position="attributes">
-            <attribute name="t-if">not doc</attribute>
+            <attribute name="t-if">not doc and doc._name == 'library.book.location'</attribute>
         </xpath>
         <xpath expr="//div[@t-field='company.report_footer']" position="after">
-            <div id="website_footer" class="flex-grow-1 text-start me-2" t-if="doc">
+            <div t-if="doc._name == 'library.book.location'" id="website_footer" class="flex-grow-1 text-start me-2">
                 <span t-out="company.website"/>
             </div>
         </xpath>
@@ -144,16 +144,6 @@
             </div>
         </div>
     </template>
-
-
-<!--    &lt;!&ndash;html container of invoice dynamic report&ndash;&gt;-->
-<!--    <template id="report_custom_invoice">-->
-<!--        <t t-call="web.html_container">-->
-<!--            <t t-foreach="docs" t-as="doc">-->
-<!--                <t t-call="ak_library_management.report_custom_invoice_document"/>-->
-<!--            </t>-->
-<!--        </t>-->
-<!--    </template>-->
 
     <!--html container of dynamic report-->
     <template id="report_library_management">

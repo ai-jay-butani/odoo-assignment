@@ -62,3 +62,11 @@
 - add report template xml file
 - inherit base invoice report action
 - change field type
+
+## [18.0.1.3.9] - 2025-03-26 | Schedule, server and automated action | Dynamic HTTP Controller
+
+- changes on variable name convention
+- change the automated action domain
+- add controller of contacts and contact details
+- add compute field in res partner model
+- add custom template for show kanban style view of contact module

@@ -33,9 +33,13 @@
         'wizard/borrow_transaction_history_wizard_views.xml',
         'views/stock_warehouse_views.xml',
         'views/res_config_settings_views.xml',
-        'views/res_partner_kanban_template.xml'
+        'views/res_partner_custom_template.xml',
+        'views/contacts_menu.xml'
     ],
-    'depends':['sale_management','contacts','stock','base_automation','hr'],
+    'assets': {
+        'web.assets_frontend': ['ak_library_management/static/src/js/contact_webcontroller.js']
+    },
+    'depends':['sale_management','contacts','stock','base_automation','hr','website'],
     'application': True,
     'license': 'LGPL-3',
 }

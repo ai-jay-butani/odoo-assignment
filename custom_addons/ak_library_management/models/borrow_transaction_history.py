@@ -95,7 +95,7 @@ class BorrowTransactionHistory(models.Model):
             yield self.custom_wizard(message)
 
         if len(self.book_ids) > 5:
-            borrow_transaction_ids = self.search([('customer_id.id', "=", self.customer_id.id)],
+            borrow_transaction_ids = self.search([('customer_id', "=", self.customer_id.id)],
                                                  order='id desc', offset=1)
             books_name = []
             [books_name.append(book.name) for rec in borrow_transaction_ids
@@ -142,7 +142,7 @@ class BorrowTransactionHistory(models.Model):
             template = self.env.ref('ak_library_management.email_template_book_overdue')
             template.send_mail(rec.id, force_send=True)
 
-    def reminder_borrow_book(self):
+    def action_reminder_borrow_book(self):
         """
         Borrow book remainder for customer if the borrow end date is within next 2 days and
         send the mail to the customer
@@ -150,19 +150,19 @@ class BorrowTransactionHistory(models.Model):
         rtype: None
         """
         date_deadline = date.today() + timedelta(days=2)
-        for records in self.search([('borrow_end_date', '=', date_deadline),
-                                    ('book_ids.status', '=', 'borrowed')]):
+        for rec in self.search([('borrow_end_date', '=', date_deadline),
+                                ('book_ids.status', '=', 'borrowed')]):
             template = self.env.ref('ak_library_management.email_template_book_reminder')
-            template.send_mail(records.id, force_send=True)
+            template.send_mail(rec.id, force_send=True)
 
-    def overdue_borrowed_books(self):
+    def action_overdue_borrowed_books(self):
         """
         If customer has not return book before due date so that customer can't borrow
         more books.
         param: None
-        rtype: dict(exception)
+        rtype: None
         """
-        borrow_transaction_ids = self.search([('customer_id.id', "=", self.customer_id.id),
+        borrow_transaction_ids = self.search([('customer_id', "=", self.customer_id.id),
                                               ('borrow_end_date', '<', date.today()),
                                               ('book_ids.status', '=', 'borrowed')])
         for rec in borrow_transaction_ids:
@@ -170,7 +170,7 @@ class BorrowTransactionHistory(models.Model):
                                   f"cannot new ones until"
                                   f" you return the overdue items.")
 
-    def change_book_status(self):
+    def action_change_borrowed_book_status(self):
         """
         change the book status from borrowed to returned using server action
         param: None

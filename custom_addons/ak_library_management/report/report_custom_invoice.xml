@@ -3,12 +3,12 @@
     <!--inherit base external layout standard-->
     <template id="external_layout_inherit" inherit_id="web.external_layout_standard">
         <xpath expr="//div[hasclass('row')]" position="attributes">
-            <attribute name="t-if">o</attribute>
+            <attribute name="t-if">o and o._name == 'account.move'</attribute>
             <attribute name="class">d-flex</attribute>
         </xpath>
 
         <xpath expr="//div[@name='company_address']" position="attributes">
-            <attribute name="t-if">not o</attribute>
+            <attribute name="t-if">not o and o._name == 'account.move'</attribute>
         </xpath>
 
         <xpath expr="//div[@name='company_address']" position="after">
@@ -20,7 +20,7 @@
             </div>
             <div class="justify-content-start flex-grow-1">
                 <span class="ms-5"><t t-out="o.name"/></span><br/>
-                <span class="ms-5">
+                <span class="ms-5" >
                     <t t-out="o.invoice_date.strftime('%d/%m/%Y')"/>
                 </span><br/>
                 <span class="ms-5">
@@ -39,10 +39,10 @@
             </div>
         </xpath>
         <xpath expr="//div[hasclass('o_footer_content')]" position="attributes">
-            <attribute name="t-if">not o</attribute>
+            <attribute name="t-if">not o and o._name == 'account.move'</attribute>
         </xpath>
         <xpath expr="//div[hasclass('o_footer_content')]" position="after">
-            <div class="text-center text-primary mb-1">
+            <div t-if="o and o._name == 'account.move'" class="text-center text-primary mb-1">
                 Nolen, Winker and Partners - 33, rue de Gasperich, L- 5826 Hesperange - VAT LU31980427
             </div>
         </xpath>
