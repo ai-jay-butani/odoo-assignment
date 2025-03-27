@@ -1,12 +1,12 @@
 <odoo>
-    <template id="contact_kanban_template">
+    <template id="contact_kanban_template" name="Contacts">
         <t t-call="website.layout">
             <div class="contacts_page">
                 <div class="container">
                     <div class="row mt-2 mb-2">
                         <t t-foreach="records" t-as="record">
                             <div class="col-md-6 col-lg-4 mt-1 position-relative mb-1">
-                                <div class="card cursor-pointer flex-row pe-5 contact-card"
+                                <div class="shadow-lg card cursor-pointer flex-row pe-5 contact-card"
                                     t-att-data-contact-slug="record.contact_slug">
                                     <t t-set="id" t-value="record.id"/>
                                     <img t-attf-src='web/image/res.partner/#{id}/avatar_128'
@@ -25,14 +25,42 @@
         </t>
     </template>
 
-    <template id="contact_detail_form_template">
+    <template id="contact_detail_form_template" name="Contact Detail">
         <t t-call="website.layout">
             <div class="oe_structure">
                 <div class="container">
-                    <div class="card mb-2 mt-2">
+                    <div class="shadow-lg card mb-2 mt-2">
                         <div class="card-body">
-                            <h5><t t-out="contact.name"/></h5>
-                            <a class="btn btn-primary mb-2" href="/contacts" role="button">Back</a>
+                            <div>
+                                <strong class="fs-3 mt-5 border-bottom" style="border-bottom-width:3px"><t t-out="contact.name"/></strong>
+                                <img t-attf-src='/web/image/res.partner/#{contact.id}/avatar_128'
+                                     class="float-md-end" style="height:80px; width:80px;"/>
+                            </div>
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                      <td>Email: <t t-out="contact.email"/></td>
+                                      <td>Website: <t t-out="contact.website"/></td>
+                                    </tr>
+                                    <tr>
+                                       <td>Phone: <t t-out="contact.phone"/></td>
+                                       <td>Tax ID: <t t-out="contact.vat"/></td>
+                                    </tr>
+                                    <tr>
+                                       <td>Mobile: <t t-out="contact.mobile"/></td>
+                                       <td>Tags:
+                                           <t t-foreach="contact.category_id" t-as="tag">
+                                               <span style="border-radius: 20px;background: #B4EBE6; padding-left:10px; padding-right:10px;margin-right:5px;">
+                                                   <t t-out="tag.name"/>
+                                               </span>
+                                           </t>
+                                       </td>
+                                    </tr>
+                                  </tbody>
+                            </table>
+                            <div class="mb-2 mt-2 back-button">
+                                <a class="btn btn-primary mb-2" href="/contacts" role="button">Back</a>
+                            </div>
                         </div>
                     </div>
                 </div>

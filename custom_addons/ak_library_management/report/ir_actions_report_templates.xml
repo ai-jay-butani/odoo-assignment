@@ -21,7 +21,7 @@
             <attribute name="t-if">not doc and doc._name == 'library.book.location'</attribute>
         </xpath>
         <xpath expr="//div[@t-field='company.report_footer']" position="after">
-            <div t-if="doc._name == 'library.book.location'" id="website_footer" class="flex-grow-1 text-start me-2">
+            <div id="website_footer" class="flex-grow-1 text-start me-2">
                 <span t-out="company.website"/>
             </div>
         </xpath>

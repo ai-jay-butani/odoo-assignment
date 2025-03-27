@@ -3,9 +3,6 @@
 from odoo import models, fields, api
 
 
-# from odoo.addons.website.models.website import slug
-
-
 class Partner(models.Model):
     _inherit = 'res.partner'
 
@@ -15,6 +12,11 @@ class Partner(models.Model):
 
     @api.depends('name')
     def _compute_contact_slug(self):
+        """
+        Slugify the record set and convert into string and write in compute field
+        param: None
+        rtype: None
+        """
         for rec in self:
-            rec_slug = self.env['ir.http']._slugify(rec.name + '#' + str(rec.id))
+            rec_slug = self.env['ir.http']._slugify(str(rec))
             rec.contact_slug = rec_slug

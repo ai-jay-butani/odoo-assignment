@@ -70,3 +70,9 @@
 - add controller of contacts and contact details
 - add compute field in res partner model
 - add custom template for show kanban style view of contact module
+
+## [18.0.1.4.0] - 2025-03-27 | Dynamic HTTP Controller
+
+- changes on json controller
+- add css in contact and contact detail template
+- change on slugify parameter
