@@ -34,10 +34,12 @@
         'views/stock_warehouse_views.xml',
         'views/res_config_settings_views.xml',
         'views/res_partner_custom_template.xml',
-        'views/contacts_menu.xml'
+        'views/webpage_menu.xml',
+        'views/customer_page.xml'
     ],
     'assets': {
-        'web.assets_frontend': ['ak_library_management/static/src/js/contact_webcontroller.js']
+        'web.assets_frontend': ['ak_library_management/static/src/js/contact_webcontroller.js',
+                                'ak_library_management/static/src/js/customer_fetch.js']
     },
     'depends':['sale_management','contacts','stock','base_automation','hr','website'],
     'application': True,

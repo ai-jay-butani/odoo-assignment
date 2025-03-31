@@ -76,3 +76,10 @@
 - changes on json controller
 - add css in contact and contact detail template
 - change on slugify parameter
+
+## [18.0.1.4.1] - 2025-03-31 | JSON controller
+
+- add json and http route in main.py file
+- add template for customer web page
+- add js file to call json route
+- change on webpage_menu.xml 

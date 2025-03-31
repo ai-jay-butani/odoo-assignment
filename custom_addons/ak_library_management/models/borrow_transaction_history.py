@@ -98,9 +98,8 @@ class BorrowTransactionHistory(models.Model):
             borrow_transaction_ids = self.search([('customer_id', "=", self.customer_id.id)],
                                                  order='id desc', offset=1)
             books_name = []
-            [books_name.append(book.name) for rec in borrow_transaction_ids
-             for book in rec.book_ids if book.name not in books_name]
-
+            [books_name.append(book.name) for book in borrow_transaction_ids.book_ids.filtered(
+                lambda x: x.name not in books_name)]
             if books_name:
                 message = (f"Customer already has [{len(borrow_transaction_ids)}] open "
                            f"borrow transactions with {books_name} books. "
@@ -122,7 +121,7 @@ class BorrowTransactionHistory(models.Model):
         list_action = list(action)
         if self.cnt > len(list_action) - 1:
             for rec in self.book_ids.filtered(lambda book: book.qty_available):
-                loc = self.env['stock.quant'].search([('psearch_recdroduct_tmpl_id.id', '=', rec.id)], limit=1)
+                loc = self.env['stock.quant'].search([('product_tmpl_id.id', '=', rec.id)], limit=1)
                 self.env['stock.quant']._update_available_quantity(loc.product_id, loc.location_id,
                                                                    quantity=-1)
         else:

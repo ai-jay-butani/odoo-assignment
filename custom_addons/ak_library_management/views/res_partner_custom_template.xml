@@ -1,8 +1,9 @@
 <odoo>
+    <!--kanban style contact page-->
     <template id="contact_kanban_template" name="Contacts">
         <t t-call="website.layout">
             <div class="contacts_page">
-                <div class="container">
+                <div class="container-fluid">
                     <div class="row mt-2 mb-2">
                         <t t-foreach="records" t-as="record">
                             <div class="col-md-6 col-lg-4 mt-1 position-relative mb-1">
@@ -25,6 +26,7 @@
         </t>
     </template>
 
+    <!--contact detail form page-->
     <template id="contact_detail_form_template" name="Contact Detail">
         <t t-call="website.layout">
             <div class="oe_structure">

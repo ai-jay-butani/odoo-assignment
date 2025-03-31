@@ -21,3 +21,17 @@ class ContactsController(http.Controller):
             'contact': contact
         }
         return request.render('ak_library_management.contact_detail_form_template', values)
+
+    @http.route('/customer', type="http", auth="public", website=True, csrf=False)
+    def input_customer_data(self, **args):
+        return request.render('ak_library_management.customer_form_page')
+
+    @http.route('/customer/email', type="json", auth="public", website=True, csrf=False)
+    def fetch_customer_data(self, **args):
+        customer = request.env['res.partner'].search([('email', '=', args.get('email'))])
+        vals = {
+            'name': customer.name,
+            'address': customer.contact_address,
+            'phone': customer.phone
+        }
+        return vals
