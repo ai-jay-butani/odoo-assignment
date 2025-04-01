@@ -83,3 +83,8 @@
 - add template for customer web page
 - add js file to call json route
 - change on webpage_menu.xml 
+
+## [18.0.1.5.1] - 2025-04-01 | Front-end - Practical Task (POS 18 products section)
+
+- add point of sale template in xml directory
+- add both xml template in xml directory

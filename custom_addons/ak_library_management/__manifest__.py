@@ -35,11 +35,13 @@
         'views/res_config_settings_views.xml',
         'views/res_partner_custom_template.xml',
         'views/webpage_menu.xml',
-        'views/customer_page.xml'
+        'views/customer_page.xml',
     ],
     'assets': {
         'web.assets_frontend': ['ak_library_management/static/src/js/contact_webcontroller.js',
-                                'ak_library_management/static/src/js/customer_fetch.js']
+                                'ak_library_management/static/src/js/customer_fetch.js'],
+        'point_of_sale._assets_pos': ['ak_library_management/static/src/xml/pos_custom_product_card_template.xml',
+                                      'ak_library_management/static/src/xml/pos_custom_product_screen_template.xml']
     },
     'depends':['sale_management','contacts','stock','base_automation','hr','website'],
     'application': True,
