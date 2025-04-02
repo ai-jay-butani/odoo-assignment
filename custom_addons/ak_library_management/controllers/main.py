@@ -15,8 +15,8 @@ class ContactsController(http.Controller):
         return request.render('ak_library_management.contact_kanban_template', values)
 
     @http.route('/contacts/<slug>', type="http", auth="public", website=True)
-    def fetch_individual_contact(self, slug):
-        contact = request.env['res.partner'].search([('contact_slug', '=', slug)])
+    def fetch_individual_contact(self, **args):
+        contact = request.env['res.partner'].search([('contact_slug', '=', args['slug'])])
         values = {
             'contact': contact
         }

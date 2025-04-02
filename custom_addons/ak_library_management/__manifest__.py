@@ -36,10 +36,13 @@
         'views/res_partner_custom_template.xml',
         'views/webpage_menu.xml',
         'views/customer_page.xml',
+        'views/product_website_custom_template.xml'
     ],
     'assets': {
         'web.assets_frontend': ['ak_library_management/static/src/js/contact_webcontroller.js',
-                                'ak_library_management/static/src/js/customer_fetch.js'],
+                                'ak_library_management/static/src/js/customer_fetch.js',
+                                # 'ak_library_management/static/src/js/product_image_download.js'
+                                ],
         'point_of_sale._assets_pos': ['ak_library_management/static/src/xml/pos_custom_product_card_template.xml',
                                       'ak_library_management/static/src/xml/pos_custom_product_screen_template.xml']
     },

@@ -88,3 +88,8 @@
 
 - add point of sale template in xml directory
 - add both xml template in xml directory
+
+## [18.0.1.5.1] - 2025-04-02 | Front-end - Practical Task (Download Product Images)
+
+- add controller of route the download image button
+- inherit xml product template
