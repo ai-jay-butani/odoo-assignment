@@ -23,7 +23,7 @@
         'views/library_book_location_views.xml',
         'views/product_template_views.xml',
         'views/product_template_barcode_views.xml',
-        'views/sale_menus.xml',
+        # 'views/sale_menus.xml',
         'views/library_bulk_book_views.xml',
         'views/res_users_views.xml',
         'views/sale_order_views.xml',
@@ -36,7 +36,8 @@
         'views/res_partner_custom_template.xml',
         'views/webpage_menu.xml',
         'views/customer_page.xml',
-        'views/product_website_custom_template.xml'
+        'views/product_website_custom_template.xml',
+        'views/product_views.xml'
     ],
     'assets': {
         'web.assets_frontend': ['ak_library_management/static/src/js/contact_webcontroller.js',
@@ -46,7 +47,7 @@
         'point_of_sale._assets_pos': ['ak_library_management/static/src/xml/pos_custom_product_card_template.xml',
                                       'ak_library_management/static/src/xml/pos_custom_product_screen_template.xml']
     },
-    'depends':['sale_management','contacts','stock','base_automation','hr','website'],
+    'depends':['sale_management','contacts','stock','base_automation','hr','website', 'purchase','website_sale','point_of_sale'],
     'application': True,
     'license': 'LGPL-3',
 }

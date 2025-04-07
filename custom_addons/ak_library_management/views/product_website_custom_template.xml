@@ -2,7 +2,7 @@
     <template id="product_website_custom_template_add_button" inherit_id="website_sale.product" >
         <xpath expr="//div[@id='add_to_cart_wrap']" postion="inside">
             <div>
-                <a t-attf-href="/download_images/{{product.id}}" class="btn btn-primary ms-2 flex-grow-1" id="download">
+                <a t-if='product.product_template_image_ids' t-attf-href="/download_images/{{product.id}}" class="btn btn-primary ms-2 flex-grow-1" id="download">
                 Download Images
                 </a>
             </div>
