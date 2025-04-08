@@ -7,10 +7,10 @@ from odoo.exceptions import ValidationError
 class StockWarehouse(models.Model):
     _inherit = 'stock.warehouse'
 
-    library_assistant = fields.Many2one(string='Library Assistant', comodel_name='hr.employee')
-    library_worker = fields.Many2many(string='Library Worker', comodel_name='hr.employee')
+    library_assistant_id = fields.Many2one(string='Library Assistant', comodel_name='hr.employee')
+    library_worker_ids = fields.Many2many(string='Library Worker', comodel_name='hr.employee')
 
-    @api.constrains('library_assistant','library_worker')
+    @api.constrains('library_assistant_id','library_worker_ids')
     def _check_name_of_assistant_worker(self):
-        if self.library_assistant in self.library_worker:
-            raise ValidationError(f'library assistant({self.library_assistant.name}) is not take as a library worker')
+        if self.library_assistant_id in self.library_worker_ids:
+            raise ValidationError(f'library assistant({self.library_assistant_id.name}) is not take as a library worker')

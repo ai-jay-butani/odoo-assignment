@@ -84,7 +84,7 @@
 - add js file to call json route
 - change on webpage_menu.xml 
 
-## [18.0.1.5.1] - 2025-04-01 | Front-end - Practical Task (POS 18 products section)
+## [18.0.1.5.0] - 2025-04-01 | Front-end - Practical Task (POS 18 products section)
 
 - add point of sale template in xml directory
 - add both xml template in xml directory
@@ -93,3 +93,7 @@
 
 - add controller of route the download image button
 - inherit xml product template
+
+## [18.0.1.5.2] - 2025-04-08 | Groups and access rights
+
+- change the name of relational fields.
