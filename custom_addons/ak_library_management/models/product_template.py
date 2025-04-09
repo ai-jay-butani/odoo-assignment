@@ -34,7 +34,6 @@ class ProductTemplate(models.Model):
         param: none
         """
         self.status = "available"
-        print(self.vendor_on_variant,'...........')
 
     def mark_as_borrowed(self):
         """

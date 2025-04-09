@@ -30,7 +30,7 @@
     <template id="contact_detail_form_template" name="Contact Detail">
         <t t-call="website.layout">
             <div class="oe_structure">
-                <div class="container">
+                <div class="container" t-if="contact">
                     <div class="shadow-lg card mb-2 mt-2">
                         <div class="card-body">
                             <div>

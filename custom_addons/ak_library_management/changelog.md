@@ -97,3 +97,8 @@
 ## [18.0.1.5.2] - 2025-04-08 | Groups and access rights
 
 - change the name of relational fields.
+
+## [18.0.1.5.3] - 2025-04-09 | Dynamic HTTP Controller
+
+- add one condition on template
+- add docstring on controller

@@ -1,0 +1,25 @@
+<odoo>
+    <!--inherit sale order form view-->
+    <record id="view_inherit_sale_order_form_add_job" model="ir.ui.view">
+        <field name="name">sale.order.add.job.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="job_name"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!--inherit sale order list view-->
+    <record id="view_inherit_order_tree_add_job" model="ir.ui.view">
+        <field name="name">sale.order.list.add.field</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.sale_order_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="job_name"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
