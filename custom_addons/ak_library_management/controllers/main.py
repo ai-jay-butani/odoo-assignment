@@ -6,7 +6,7 @@ from odoo.http import request
 
 class ContactsController(http.Controller):
 
-    @http.route('/contacts', type="http", auth="public", website=True)
+    @http.route('/contacts', type="http", auth="public", website=True, csrf=False)
     def fetch_all_contacts(self, **kw):
         """
         search all contacts of res.partner model and return contact kanban
@@ -15,13 +15,13 @@ class ContactsController(http.Controller):
         param:None
         return: xml template
         """
-        contacts = request.env['res.partner'].search([])
+        contacts = request.env['res.partner'].sudo().search([])
         values = {
             'records': contacts
         }
         return request.render('ak_library_management.contact_kanban_template', values)
 
-    @http.route('/contacts/<slug>', type="http", auth="public", website=True)
+    @http.route('/contacts/<slug>', type="http", auth="public", website=True, csrf=False)
     def fetch_individual_contact(self, **args):
         """
         Using slug to search particular contact and return contact detail form
@@ -29,7 +29,7 @@ class ContactsController(http.Controller):
         param:slug(string)
         return:xml template
         """
-        contact = request.env['res.partner'].search([('contact_slug', '=', args['slug'])])
+        contact = request.env['res.partner'].sudo().search([('contact_slug', '=', args['slug'])])
         values = {
             'contact': contact
         }
@@ -53,7 +53,7 @@ class ContactsController(http.Controller):
         param: email(string)
         return: dictionary
         """
-        customer = request.env['res.partner'].search([('email', '=', args.get('email'))])
+        customer = request.env['res.partner'].sudo().search([('email', '=', args.get('email'))])
         vals = {
             'name': customer.name,
             'address': customer.contact_address,
