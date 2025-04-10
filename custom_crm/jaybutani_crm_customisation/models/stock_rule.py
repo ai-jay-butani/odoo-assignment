@@ -9,6 +9,6 @@ class StockRule(models.Model):
     def _get_stock_move_values(self, product_id, product_qty, product_uom,
                                location_dest_id, name, origin, company_id, values):
         res = super()._get_stock_move_values(product_id, product_qty, product_uom,
-                               location_dest_id, name, origin, company_id, values)
-        res['job_name'] = values.get('job_name',False)
+                                             location_dest_id, name, origin, company_id, values)
+        res['job_name'] = values.get('job_name', False)
         return res

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class SaleOrder(models.Model):
@@ -13,11 +13,13 @@ class SaleOrder(models.Model):
         action['context']['default_job_name'] = self.job_name
         return action
 
-class SaleOrderLine(models.Model):
-    _inherit = 'sale.order.line'
+    @api.onchange('opportunity_id')
+    def _onchange_job_from_opportunity(self):
+        for rec in self:
+            if rec.opportunity_id:
+                rec.job_name = rec.opportunity_id.name
 
-    def _prepare_procurement_values(self, group_id):
-        values = super()._prepare_procurement_values(group_id)
-        values['job_name'] = self.order_id.job_name
-        return values
-
+    def _prepare_invoice(self):
+        vals = super()._prepare_invoice()
+        vals['job_name'] = self.job_name
+        return vals

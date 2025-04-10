@@ -3,7 +3,7 @@
 from odoo import models, fields
 
 
-class StockMoveLine(models.Model):
-    _inherit = 'stock.move'
+class ProjectProject(models.Model):
+    _inherit = 'project.project'
 
     job_name = fields.Char(string='Job Name')
