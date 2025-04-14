@@ -30,7 +30,7 @@ class SaleOrder(models.Model):
         return: None
         """
         for rec in self:
-            rec.job_name = False
+            rec.job_name = rec.job_name
             if rec.opportunity_id:
                 rec.job_name = rec.opportunity_id.name
 

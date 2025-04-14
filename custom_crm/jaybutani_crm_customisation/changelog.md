@@ -8,3 +8,7 @@
 
 - changes on sale order instead of onchange use compute method
 - add doc string and formatting
+
+## [18.0.1.0.2] - 2025-04-14 | Propagate Opportunity Name to Downstream Objects
+
+- changes on job name compute method
