@@ -8,6 +8,11 @@ class StockRule(models.Model):
 
     def _get_stock_move_values(self, product_id, product_qty, product_uom,
                                location_dest_id, name, origin, company_id, values):
+        """
+        Inherit get stock move values method and redirect job name to stock.move
+
+        return: res(dict)
+        """
         res = super()._get_stock_move_values(product_id, product_qty, product_uom,
                                              location_dest_id, name, origin, company_id, values)
         res['job_name'] = values.get('job_name', False)

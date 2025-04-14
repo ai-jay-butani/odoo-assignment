@@ -1,22 +1,24 @@
 <odoo>
+    <!--inherit delivery tree view-->
     <record id="view_inherit_picking_tree_add_job" model="ir.ui.view">
         <field name="model">stock.picking</field>
         <field name="name">stock.picking.list.add.job</field>
         <field name="inherit_id" ref="stock.vpicktree"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="job_name" readonly="origin != False"/>
+                <field name="job_name" readonly="origin"/>
             </xpath>
         </field>
     </record>
 
+    <!--inherit delivery form view-->
     <record id="view_inherit_picking_form_add_job" model="ir.ui.view">
         <field name="name">view.picking.form.inherit.add.job</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='partner_id']" position="after">
-                <field name="job_name" readonly="origin != False"/>
+                <field name="job_name" readonly="origin"/>
             </xpath>
         </field>
     </record>
