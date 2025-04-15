@@ -103,3 +103,7 @@
 - add one condition on template
 - add docstring on controller
 - change main.py and add sudo search
+
+## [18.0.1.5.3] - 2025-04-09 | Dynamic HTTP Controller
+
+-changes on res_partner template image tag

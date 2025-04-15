@@ -14,7 +14,7 @@
         'views/project_project_views.xml',
         'views/account_move_views.xml'
     ],
-    'depends':['sale_management','contacts','stock','crm','mrp', 'project', 'sale_project','account'],
+    'depends':['sale_management','contacts','stock','crm','mrp', 'project', 'sale_project','accountant'],
     'application': True,
     'license': 'LGPL-3',
 }

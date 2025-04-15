@@ -10,7 +10,7 @@
                                 <div class="shadow-lg card cursor-pointer flex-row pe-5 contact-card"
                                     t-att-data-contact-slug="record.contact_slug">
                                     <t t-set="id" t-value="record.id"/>
-                                    <img t-attf-src='web/image/res.partner/#{id}/avatar_128'
+                                    <img t-if="record.image_1920" t-att-src="image_data_uri(record.image_1920)"
                                          class="card-img-left" style="height:120px; width:120px;"
                                          loading='lazy' alt="contact image"/>
                                     <div class="card-body">

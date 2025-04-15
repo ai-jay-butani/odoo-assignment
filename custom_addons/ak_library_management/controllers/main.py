@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from odoo import http
-from odoo.http import request
+from odoo.http import request, base64
+from odoo.tools.image import image_data_uri
 
 
 class ContactsController(http.Controller):
 
-    @http.route('/contacts', type="http", auth="public", website=True, csrf=False)
+    @http.route('/contacts', type="http", auth="public", website=True)
     def fetch_all_contacts(self, **kw):
         """
         search all contacts of res.partner model and return contact kanban
@@ -17,7 +18,7 @@ class ContactsController(http.Controller):
         """
         contacts = request.env['res.partner'].sudo().search([])
         values = {
-            'records': contacts
+            'records': contacts,
         }
         return request.render('ak_library_management.contact_kanban_template', values)
 
