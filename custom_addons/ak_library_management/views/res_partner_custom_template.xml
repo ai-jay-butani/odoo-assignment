@@ -35,7 +35,7 @@
                         <div class="card-body">
                             <div>
                                 <strong class="fs-3 mt-5 border-bottom" style="border-bottom-width:3px"><t t-out="contact.name"/></strong>
-                                <img t-attf-src='/web/image/res.partner/#{contact.id}/avatar_128'
+                                <img t-if="contact.image_1920" t-att-src="image_data_uri(contact.image_1920)"
                                      class="float-md-end" style="height:80px; width:80px;"/>
                             </div>
                             <table class="table table-borderless">
