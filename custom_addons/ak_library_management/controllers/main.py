@@ -8,7 +8,7 @@ from odoo.tools.image import image_data_uri
 class ContactsController(http.Controller):
 
     @http.route('/contacts', type="http", auth="public", website=True)
-    def fetch_all_contacts(self, **kw):
+    def fetch_all_contacts(self):
         """
         search all contacts of res.partner model and return contact kanban
         template.
@@ -37,7 +37,7 @@ class ContactsController(http.Controller):
         return request.render('ak_library_management.contact_detail_form_template', values)
 
     @http.route('/customer', type="http", auth="public", website=True, csrf=False)
-    def input_customer_data(self, **args):
+    def input_customer_data(self):
         """
         return customer form page
 
