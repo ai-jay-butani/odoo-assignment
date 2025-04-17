@@ -2,20 +2,16 @@
     <!--product list page inherit and include add to cart button-->
     <template id="product_website_custom_template_add_button_and_quantity" inherit_id="website_sale.products_item" >
         <xpath expr="//h6[@class='o_wsale_products_item_title mb-2 text-break']" position="inside">
-            <div t-if="product.qty_available" class="text-success pt-2">
+            <div t-if="product.sudo().qty_available" class="text-success pt-2">
                 <span>On Hand Quantity:</span>
                 <span><t t-out="product.qty_available"/></span>
             </div>
-            <div t-if="product.qty_available == 0" class="text-danger pt-2">
+            <div t-if="product.sudo().qty_available == 0" class="text-danger pt-2">
                 <span>Out Of Stock</span>
             </div>
         </xpath>
         <xpath expr="//div[hasclass('o_wsale_product_btn')]" position="inside">
-            <button t-if="product.qty_available" type="button" class="btn btn-primary btn-sm add_to_cart"
-                    t-att-data-product-id="product.product_variant_id.id">
-                <i class="fa fa-shopping-cart mr-1"/>
-            </button>
-            <button t-if="product.qty_available == 0" disabled="1" type="button" class="btn btn-primary btn-sm add_to_cart"
+            <button t-att-disabled="product.sudo().qty_available == 0" type="button" class="btn btn-primary btn-sm add_to_cart"
                     t-att-data-product-id="product.product_variant_id.id">
                 <i class="fa fa-shopping-cart mr-1"/>
             </button>
