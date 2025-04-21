@@ -1,0 +1,32 @@
+<odoo>
+    <!--custom paper format-->
+    <record id="paperformat_product_catalog_style" model="report.paperformat">
+        <field name="name">A4 (No Margin)</field>
+        <field name="default" eval="True" />
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">10</field>
+        <field name="margin_bottom">0</field>
+        <field name="margin_left">0</field>
+        <field name="margin_right">0</field>
+        <field name="header_line" eval="False" />
+        <field name="header_spacing">20</field>
+        <field name="dpi">90</field>
+        <field name="css_margins" eval="True" />
+    </record>
+
+    <!--product catalog report action-->
+    <record id="action_report_product_catalog" model="ir.actions.report">
+        <field name="name">Product Catalog</field>
+        <field name="model">product.catalog.generator</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">ak_product_cataloge_pdf.report_product_catalog</field>
+        <field name="report_file">ak_product_cataloge_pdf.report_product_catalog</field>
+        <field name="print_report_name">'Product Catalog'</field>
+        <field name="binding_model_id" ref="model_product_catalog_generator"/>
+        <field name="paperformat_id" ref="ak_product_cataloge_pdf.paperformat_product_catalog_style"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

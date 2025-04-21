@@ -1,0 +1,138 @@
+<odoo>
+    <!--custom layout of product catalog report-->
+    <template id="custom_external_layout_product_catalog">
+        <t t-set="doc" t-value="docs"/>
+        <div t-if='doc.catalog_style == "style1"' class="header text-center">
+            <h5>
+                Generated Product Catalog
+            </h5>
+        </div>
+
+        <div class="article">
+            <t t-set="count" t-value="0"/>
+            <div t-if="doc.catalog_style == 'style1'">
+                <t t-foreach="doc.product_ids" t-as="product">
+                    <div t-if="count % doc.page_break_after == 0" style="page-break-after: always;"/>
+                    <div name="product detail" class="d-flex">
+                        <div class="mb-3 mt-2">
+                            <span>
+                                <img t-if="product.image_1920"
+                                     t-att-src="image_data_uri(product.image_1920)"
+                                     style="height:130px; width:150px;"
+                                     loading='lazy' alt="product image"/>
+                                <img t-else=""
+                                     style="height:130px; width:150px;"
+                                     loading='lazy' alt="product image" class="d-block ms-auto me-auto"/>
+                            </span>
+                        </div>
+                        <div class="ms-2 mt-2">
+                            <div>
+                                <b>
+                                    <t t-out="product.name"/>
+                                </b>
+                            </div>
+                            <div class="bg-secondary mb-1 text-center" style="width:150px;">
+                                <t t-out="product.default_code"/>
+                            </div>
+                            <div class="bg-secondary text-center" style="width:150px;">
+                                <b>Price :</b>
+                                <t t-out="product.lst_price"
+                                   t-options="{'widget':'monetary', 'display_currency':product.currency_id}"/>
+                            </div>
+                            <div>
+                                <t t-out="product.description"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="border: solid 1px purple;"/>
+                    <t t-set="count" t-value="count + 1"/>
+                </t>
+            </div>
+            <div t-if="doc.catalog_style == 'style2'">
+                <table class="o_has_total_table table o_main_table table-borderless">
+                    <tbody>
+                        <t t-set="i" t-value="0"/>
+                        <t t-set="total" t-value="len(doc.product_ids)"/>
+                        <t t-if="i &lt; total" t-foreach="total" t-as="t">
+                            <tr>
+                                <td>
+                                    <div style="border: dashed purple;">
+                                        <div class="text-center mb-1" style="font-size:17px;">
+                                            <b>
+                                                <t t-out="doc.product_ids[i].name"/>
+                                            </b>
+                                        </div>
+                                        <div>
+                                            <img t-if="doc.product_ids[i].image_1920"
+                                                 t-att-src="image_data_uri(doc.product_ids[i].image_1920)"
+                                                 style="height:130px; width:180px;"
+                                                 loading='lazy' alt="product image" class="d-block ms-auto me-auto"/>
+                                            <img t-else=""
+                                                 style="height:130px; width:180px;"
+                                                 loading='lazy' alt="product image" class="d-block ms-auto me-auto"/>
+                                        </div>
+                                        <div class="text-center mb-2 mt-2 ms-1 me-1" style="background-color:#FFD700;">
+                                            <t t-out="doc.product_ids[i].default_code"/>
+                                        </div>
+                                        <div class="ms-1 me-1"
+                                             style="padding:30px; background-color:#FFD700; text-align:center;">
+                                            <span>
+                                                <t t-out="doc.product_ids[i].lst_price"
+                                                   t-options="{'widget':'monetary', 'display_currency':doc.product_ids[i].currency_id}"/>
+                                            </span>
+                                        </div>
+                                        <div style="border: solid 1px purple;" class="m-2"/>
+                                        <div class="ms-1 me-1" style="padding-bottom:200px;">
+                                            <t t-out="doc.product_ids[i].description"/>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="mb-3" t-if="i+1 &lt; total"
+                                         style="border: dashed purple;">
+                                        <div class="text-center mb-1" style="font-size:17px;">
+                                            <b>
+                                                <t t-out="doc.product_ids[i+1].name"/>
+                                            </b>
+                                        </div>
+                                        <div>
+                                            <img t-if="doc.product_ids[i+1].image_1920"
+                                                 t-att-src="image_data_uri(doc.product_ids[i+1].image_1920)"
+                                                 style="height:130px; width:180px;"
+                                                 loading='lazy' alt="product image" class="d-block ms-auto me-auto"/>
+                                            <img t-else=""
+                                                 style="height:130px; width:150px;"
+                                                 loading='lazy' alt="product image" class="d-block ms-auto me-auto"/>
+                                        </div>
+                                        <div class="text-center mb-2 mt-2 ms-1 me-1" style="background-color:#FFD700;">
+                                            <t t-out="doc.product_ids[i+1].default_code"/>
+                                        </div>
+                                        <div class="ms-1 me-1"
+                                             style="padding:30px; background-color:#FFD700; text-align:center;">
+                                            <span>
+                                                <t t-out="doc.product_ids[i+1].lst_price"
+                                                   t-options="{'widget':'monetary', 'display_currency':doc.product_ids[i+1].currency_id}"/>
+                                            </span>
+                                        </div>
+                                        <div style="border: solid 1px purple;" class="m-2"/>
+                                        <div class="ms-1 me-1" style="padding-bottom:200px;">
+                                            <t t-out="doc.product_ids[i].description"/>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <t t-set="i" t-value="i+2"/>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+
+    <!--html container of custom product catalog report-->
+    <template id="report_product_catalog">
+        <t t-call="web.html_container">
+            <t t-call="ak_product_cataloge_pdf.custom_external_layout_product_catalog"/>
+        </t>
+    </template>
+</odoo>

@@ -16,4 +16,3 @@ class ProductProduct(models.Model):
                 rec.variant_seller_ids = rec.product_tmpl_id.variant_seller_ids
             else:
                 rec.variant_seller_ids = rec.custom_variant_seller_ids
-

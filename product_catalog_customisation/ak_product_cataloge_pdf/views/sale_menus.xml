@@ -1,0 +1,38 @@
+<odoo>
+    <!--product catalog form view-->
+    <record id="product_catalog_form_view" model="ir.ui.view">
+        <field name="name">product.catalog.form.view</field>
+        <field name="model">product.catalog.generator</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="catalog_style"/>
+                        <field name="page_break_after"/>
+                        <field name="product_ids" widget="many2many_tags"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button type="action" string="Generate" class="oe_highlight" name="%(ak_product_cataloge_pdf.action_report_product_catalog)d"/>
+                    <button string="Discard" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!--action product catalog-->
+    <record id="action_product_catalog_generator" model="ir.actions.act_window">
+        <field name="name">Product Catalog</field>
+        <field name="res_model">product.catalog.generator</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="product_catalog_form_view"/>
+        <field name="target">new</field>
+    </record>
+
+    <!--add menu in sales reporting-->
+    <menuitem id="menu_reporting_product_catalog"
+              parent="sale.menu_sale_report"
+              name="Product Catalog Generator"
+              action="action_product_catalog_generator"
+              sequence="60"/>
+</odoo>
