@@ -10,5 +10,10 @@ class StockMoveLine(models.Model):
 
     @api.depends('sale_line_id.order_id.job_name')
     def _compute_job_from_sale(self):
+        """
+        compute job name from sale order job name
+
+        return: None
+        """
         for rec in self:
             rec.job_name = rec.sale_line_id.order_id.job_name
