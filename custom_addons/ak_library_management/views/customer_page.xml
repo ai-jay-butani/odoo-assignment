@@ -35,7 +35,7 @@
                                       <label for="InputAddress" class="form-label">Address <span class="text-danger">*</span></label>
                                       <input type="textarea" class="form-control" name="name" id="InputAddress" placeholder="Address" readonly="True"/>
                                     </div>
-                                      <div class="col-12">
+                                    <div class="col-12">
                                       <label for="InputPhone" class="form-label">Phone <span class="text-danger">*</span></label>
                                       <input type="tel" class="form-control" name="name" id="InputPhone" placeholder="Phone" readonly="True"/>
                                     </div>

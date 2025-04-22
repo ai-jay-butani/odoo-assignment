@@ -11,11 +11,10 @@ publicWidget.registry.ProductListAddToCart = publicWidget.Widget.extend({
         },
 
      _onClickCart: function(ev){
+        ev.preventDefault()
         let productId = $(ev.currentTarget).data('product-id');
-        console.log(productId);
         rpc("/shop/cart/update_json",{'product_id': productId,'add_qty':1}).then(
             function(data){
-                console.log(data.cart_quantity)
                 var $quantity = $(".my_cart_quantity")
                 $quantity.text(data.cart_quantity)
             });

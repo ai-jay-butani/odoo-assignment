@@ -61,3 +61,12 @@ class ContactsController(http.Controller):
             'phone': customer.phone
         }
         return vals
+
+    @http.route('/contact/save', type='json', auth='public', website=True)
+    def save_contact_details(self, **args):
+
+        contact = request.env['res.partner'].sudo().search([('id','=',args.get('contact_id'))])
+        args.pop('contact_id')
+        for key,val in args.items():
+            contact.write({key:val})
+        return

@@ -20,7 +20,7 @@ class SaleOrder(models.Model):
         action['context']['default_job_name'] = self.job_name
         return action
 
-    @api.depends('opportunity_id')
+    @api.depends('opportunity_id.name')
     def _compute_job_from_opportunity(self):
         """
         If opportunity id is change than job name is change this method are
