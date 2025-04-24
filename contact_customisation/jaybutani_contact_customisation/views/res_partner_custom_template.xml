@@ -35,6 +35,12 @@
         <t t-call="website.layout">
             <div class="oe_structure">
                 <div class="container" t-if="contact">
+                    <div class="alert alert-warning mt-1" id="formValidation" role="alert" style="display:none;">
+                        Validation.....
+                    </div>
+                    <div class="alert alert-success mt-1" id="formValidationSuccess" role="alert" style="display:none;">
+                        Validation.....
+                    </div>
                     <div class="shadow-lg card mb-2 mt-2">
                         <div class="card-body">
                             <form id="contact_form">
@@ -64,13 +70,13 @@
                                     </div>
                                     <div class="col-12 mt-2">
                                         <label for="InputAddress" class="form-label">Address</label>
-                                        <input type="textarea" class="form-control" name="name" id="InputAddress"
+                                        <input type="textarea" class="form-control" name="address" id="InputAddress"
                                                placeholder="Address" readonly="True"
-                                               t-att-value="contact.contact_address"/>
+                                               t-att-value="contact.contact_address_inline"/>
                                     </div>
                                     <div class="col-6 mt-2">
                                         <label for="InputWebsite" class="form-label">Website</label>
-                                        <input type="tel" class="form-control" name="name" id="InputWebsite"
+                                        <input type="tel" class="form-control" name="website" id="InputWebsite"
                                                placeholder="Website" readonly="True"
                                                t-att-value="contact.website"/>
                                     </div>
@@ -78,14 +84,14 @@
                                         <label for="InputPhone" class="form-label">Phone
                                             <span class="text-danger">*</span>
                                         </label>
-                                        <input type="tel" class="form-control" name="name" id="InputPhone"
+                                        <input type="tel" class="form-control" name="phone" id="InputPhone"
                                                placeholder="Phone" readonly="True"
                                                t-att-value="contact.phone"/>
                                     </div>
                                     <div class="col-12 mt-2">
                                         <a class="btn btn-primary mb-2 mt-2" href="/contacts" role="button">Back</a>
                                         <button class="btn btn-primary mb-2 mt-2 ms-1 btn-save" style="float: right;"
-                                                type="submit" t-att-data-id="contact.id">
+                                                t-att-data-id="contact.id">
                                             Save
                                         </button>
                                         <button class="btn btn-primary mb-2 mt-2 ms-1 btn-edit" style="float: right;">
@@ -94,28 +100,6 @@
                                     </div>
                                 </div>
                             </form>
-                            <!--                            <table class="table table-borderless">-->
-                            <!--                                <tbody>-->
-                            <!--                                    <tr>-->
-                            <!--                                      <td>Email: <t t-out="contact.email"/></td>-->
-                            <!--                                      <td>Website: <t t-out="contact.website"/></td>-->
-                            <!--                                    </tr>-->
-                            <!--                                    <tr>-->
-                            <!--                                       <td>Phone: <t t-out="contact.phone"/></td>-->
-                            <!--                                       <td>Tax ID: <t t-out="contact.vat"/></td>-->
-                            <!--                                    </tr>-->
-                            <!--                                    <tr>-->
-                            <!--                                       <td>Mobile: <t t-out="contact.mobile"/></td>-->
-                            <!--                                       <td>Tags:-->
-                            <!--                                           <t t-foreach="contact.category_id" t-as="tag">-->
-                            <!--                                               <span style="border-radius: 20px;background: #B4EBE6; padding-left:10px; padding-right:10px;margin-right:5px;">-->
-                            <!--                                                   <t t-out="tag.name"/>-->
-                            <!--                                               </span>-->
-                            <!--                                           </t>-->
-                            <!--                                       </td>-->
-                            <!--                                    </tr>-->
-                            <!--                                  </tbody>-->
-                            <!--                            </table>-->
                         </div>
                     </div>
                 </div>

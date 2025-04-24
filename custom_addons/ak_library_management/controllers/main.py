@@ -1,40 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from odoo import http
-from odoo.http import request, base64
-from odoo.tools.image import image_data_uri
+from odoo.http import request
 
 
-class ContactsController(http.Controller):
-
-    @http.route('/contacts', type="http", auth="public", website=True)
-    def fetch_all_contacts(self):
-        """
-        search all contacts of res.partner model and return contact kanban
-        template.
-
-        param:None
-        return: xml template
-        """
-        contacts = request.env['res.partner'].sudo().search([])
-        values = {
-            'records': contacts,
-        }
-        return request.render('ak_library_management.contact_kanban_template', values)
-
-    @http.route('/contacts/<slug>', type="http", auth="public", website=True, csrf=False)
-    def fetch_individual_contact(self, **args):
-        """
-        Using slug to search particular contact and return contact detail form
-
-        param:slug(string)
-        return:xml template
-        """
-        contact = request.env['res.partner'].sudo().search([('contact_slug', '=', args['slug'])])
-        values = {
-            'contact': contact
-        }
-        return request.render('ak_library_management.contact_detail_form_template', values)
+class Controller(http.Controller):
 
     @http.route('/customer', type="http", auth="public", website=True, csrf=False)
     def input_customer_data(self):
@@ -61,12 +31,3 @@ class ContactsController(http.Controller):
             'phone': customer.phone
         }
         return vals
-
-    @http.route('/contact/save', type='json', auth='public', website=True)
-    def save_contact_details(self, **args):
-
-        contact = request.env['res.partner'].sudo().search([('id','=',args.get('contact_id'))])
-        args.pop('contact_id')
-        for key,val in args.items():
-            contact.write({key:val})
-        return

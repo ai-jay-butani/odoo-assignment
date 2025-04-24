@@ -1,12 +1,5 @@
 <odoo>
     <data>
-        <!--contacts menu-->
-        <record id="web_contacts_menu" model="website.menu">
-            <field name="name">Contacts</field>
-            <field name="url">/contacts</field>
-            <field name="parent_id" ref="website.main_menu"/>
-        </record>
-
         <!--customer menu-->
         <record id="web_customer_menu" model="website.menu">
             <field name="name">Customer</field>

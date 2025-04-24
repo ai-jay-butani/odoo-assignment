@@ -26,21 +26,37 @@ publicWidget.registry.ContactSavePage = publicWidget.Widget.extend({
         var form_data = {
             "email": $('#InputEmail').val(),
             "name": $('#InputName').val(),
-            "contact_address": $('#InputAddress').val(),
+            "contact_address_inline": $('#InputAddress').val(),
             "website": $('#InputWebsite').val(),
             "phone": $('#InputPhone').val(),
         }
         var contact_id = $(event.currentTarget).data('id')
         form_data['contact_id'] = contact_id
-        rpc('/contact/save',form_data).then(
-            function(response){
-                alert('Your data has been save successfully.')
-                var form_input_tag = document.getElementById('contact_form').getElementsByTagName('input')
-                for (let i=0; i<form_input_tag.length; i++){
-                    form_input_tag[i].setAttribute('readonly',true)
+        if(!form_data['name']){
+            $('#formValidation').html('Name Field is Mandatory')
+            $('#formValidation').show()
+        }else if(!form_data['email']){
+            $('#formValidation').html('Email Field is Mandatory')
+            $('#formValidation').show()
+        }else if(!form_data['phone']){
+            $('#formValidation').html('Phone Field is Mandatory')
+            $('#formValidation').show()
+        }else{
+            $('#formValidation').hide()
+            rpc('/contact/save',form_data).then(
+                function(response){
+                    $('#formValidationSuccess').html('Your data has been save successfully')
+                    $('#formValidationSuccess').show()
+                    var form_input_tag = document.getElementById('contact_form').getElementsByTagName('input')
+                    for (let i=0; i<form_input_tag.length; i++){
+                        form_input_tag[i].setAttribute('readonly',true)
+                    }
+                    setTimeout(function(){
+                    $('#formValidationSuccess').hide()},1000)
                 }
-            }
-        )},
+            )
+        }
+    },
 
     _onEditClick: function(event){
         event.preventDefault()

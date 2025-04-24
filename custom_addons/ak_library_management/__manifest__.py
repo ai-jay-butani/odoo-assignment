@@ -33,14 +33,13 @@
         'wizard/borrow_transaction_history_wizard_views.xml',
         'views/stock_warehouse_views.xml',
         'views/res_config_settings_views.xml',
-        'views/res_partner_custom_template.xml',
         'views/webpage_menu.xml',
         'views/customer_page.xml',
         'views/product_website_custom_template.xml',
         'views/product_views.xml'
     ],
     'assets': {
-        'web.assets_frontend': ['ak_library_management/static/src/js/contact_webcontroller.js',
+        'web.assets_frontend': [
                                 'ak_library_management/static/src/js/customer_fetch.js',
                                 ],
         'point_of_sale._assets_pos': ['ak_library_management/static/src/xml/pos_custom_product_card_template.xml',
