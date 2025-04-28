@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+         <template id="success_page_template" name="Success Page">
+            <t t-call="website.layout">
+                <div class="success_page">
+                    <div class="container">
+                        <form id="success_form" action="/user/details/submit_successfully">
+                            <div style="margin-top:10px; margin-left:80%">
+                                <button class="btn btn-primary mt-3" type="submit">
+                                    Next
+                                    <i class="fa fa-angle-double-right"/>
+                                </button>
+                            </div>
+                            <div style="margin-top:7%; margin-left:20%;">
+                                <h4>Congratulations! For Successfully Complete Onboarding Process</h4>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

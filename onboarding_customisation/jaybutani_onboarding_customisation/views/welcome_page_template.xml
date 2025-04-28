@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+        <template id="welcome_page_template" name="Welcome_page">
+            <t t-call="website.layout">
+                <div class="welcome_page">
+                    <div class="container">
+                        <form id="welcome_form" action="/user/details/">
+                            <div style="margin-top:10px; margin-left:80%">
+                                <button class="btn btn-primary mt-3" type="submit">
+                                    Next
+                                    <i class="fa fa-angle-double-right"/>
+                                </button>
+                            </div>
+                            <div style="margin-top:5%; margin-left:40%;">
+                                <h1>Welcome</h1>
+                                <h5>Congratulations on signing up</h5>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>

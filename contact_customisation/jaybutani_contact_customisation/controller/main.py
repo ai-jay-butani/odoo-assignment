@@ -63,6 +63,5 @@ class ContactController(http.Controller):
             else:
                 contact = request.env['res.partner'].search([('id', '=', args.get('contact_id'))])
                 args.pop('contact_id')
-                for key, val in args.items():
-                    contact.write({key: val})
+                contact.write(args)
         return

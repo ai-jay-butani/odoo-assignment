@@ -1,0 +1,139 @@
+<odoo>
+    <data>
+        <template id="user_detail_form_template" name="User Detail">
+            <t t-call="website.layout">
+                <div class="oe_structure">
+                    <div class="container">
+                        <t t-if="errors" t-foreach="errors" t-as="err">
+                            <div class="alert alert-warning mt-1" role="alert">
+                                    <t t-out="err"/>
+                            </div>
+                        </t>
+                        <form id="user_details" action="/user/details/submit/" method="post">
+                            <div>
+                                <div name="title" class="text-center mt-1">
+                                    <h3>User Details Form</h3>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-2">
+                                        <label for="InputAddress" class="form-label">
+                                            <h6>Address:</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="textarea" class="form-control" name="contact_address_inline"
+                                               id="InputAddress"
+                                               placeholder="Address"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-2">
+                                        <label for="InputDOB" class="form-label fw-2">
+                                            <h6>Date Of Birth:</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="Date" class="form-control" name="date_birth"
+                                               id="InputDOB"
+                                               placeholder="Date Of Birth"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-2">
+                                        <label for="InputPOB" class="form-label">
+                                            <h6>Place Of Birth:</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" name="place_birth"
+                                               id="InputPOB"
+                                               placeholder="Place Of Birth"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-2">
+                                        <label for="InputGender" class="form-label">
+                                            <h6>Gender:</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <select class="form-control form-select form-select-primary" name="gender"
+                                                id="InputGender">
+                                            <option selected="selected">Male</option>
+                                            <option>Female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-2">
+                                        <label for="InputMO" class="form-label">
+                                            <h6>Mobile No:</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" name="mobile"
+                                               id="InputMO"
+                                               placeholder="Mobile No"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-2">
+                                        <label for="InputPTD" class="form-label">
+                                            <h6>Passport Details:</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" name="passport_detail"
+                                               id="InputPTD"
+                                               placeholder="Passport Details"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-2">
+                                        <label for="InputDL" class="form-label">
+                                            <h6>Driving License:</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" name="driving_license"
+                                               id="InputDL"
+                                               placeholder="Driving License"/>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-2">
+                                        <label for="InputSL" class="form-label">
+                                            <h6>Speaking Language:</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="radio" name="speaking_language" value="Gujarati">Gujarati</input>
+                                        <input type="radio" name="speaking_language" value="Hindi">Hindi</input>
+                                        <input type="radio" name="speaking_language" value="English">English</input>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center mt-2">
+                                    <div class="col-2">
+                                        <label for="InputJP" class="form-label">
+                                            <h6>Job Position:</h6>
+                                        </label>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="form-control" name="function"
+                                               id="InputJP"
+                                               placeholder="Job Position"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-3 mb-2">
+                                <button class="btn btn-primary" type="submit">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
