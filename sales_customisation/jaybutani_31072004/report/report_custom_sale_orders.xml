@@ -1,0 +1,11 @@
+<odoo>
+    <!--inherit pdf/quote report and add sale order approve data-->
+    <template id="report_custom_sale_order_document" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//div[@name='so_total_summary']" position="after">
+            <div t-if="doc.state == 'sale'">
+                <span>Approved By: <t t-out="doc.approve_by"/></span><br/>
+                <span>Approved Date: <t t-out="doc.approve_date"/></span>
+            </div>
+        </xpath>
+    </template>
+</odoo>

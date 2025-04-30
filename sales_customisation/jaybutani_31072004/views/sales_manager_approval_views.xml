@@ -1,0 +1,46 @@
+<odoo>
+    <!--sales manager approval list view-->
+    <record id="sales_manager_approval_view_list" model="ir.ui.view">
+        <field name="name">sales.manager.list.view</field>
+        <field name="model">sales.manager.approval</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="user_id"/>
+                <field name="approval_threshold"/>
+            </list>
+        </field>
+    </record>
+
+    <!--sales manager approval form view-->
+    <record id="sales_manager_approval_view_form" model="ir.ui.view">
+        <field name="name">sales.manager.form.view</field>
+        <field name="model">sales.manager.approval</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="user_id"/>
+                        <field name="approval_threshold"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- sales manager approval action-->
+    <record id="action_sales_manager_approval" model="ir.actions.act_window">
+        <field name="name">Sales Manager Approval</field>
+        <field name="res_model">sales.manager.approval</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="sales_manager_approval_view_list"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Generate library Details
+            </p>
+        </field>
+    </record>
+
+    <!--sales manager approval menu under configuration of sales-->
+    <menuitem id="sales_manager_approval_menu" name="Sales Manager Approval" action="action_sales_manager_approval"
+              parent="sale.menu_sale_config" sequence="20"/>
+</odoo>

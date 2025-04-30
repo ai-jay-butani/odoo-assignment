@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+jaybutani_31072004.access_sales_manager_approval,access_sales_manager_approval,jaybutani_31072004.model_sales_manager_approval,,1,1,1,1
+jaybutani_31072004.access_sales_managers,access_sales_managers,jaybutani_31072004.model_sales_managers,,1,1,1,1

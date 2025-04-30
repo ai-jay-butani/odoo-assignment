@@ -1,0 +1,49 @@
+<odoo>
+    <!--mail template for sales manager-->
+    <record id="email_template_sales_manager" model="mail.template">
+        <field name="name">Sale Order for Approval</field>
+        <field name="model_id" ref="jaybutani_31072004.model_sale_order"/>
+        <field name="subject">Sale Order For Approval</field>
+        <field name="email_from">{{ user.email_formatted }}</field>
+        <field name="email_to">{{ object.sale_manager.user_id.email_formatted }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear,
+                    <t t-out="object.sale_manager.user_id.name or ''"/>
+                    <br/>
+                    <p>
+                        <t t-out="object.name or ''"/>
+                        sale order for approval
+                    </p>
+                    <br/>
+                    Thank You.
+                </p>
+            </div>
+        </field>
+    </record>
+
+    <!--mail template for pending approval order remainder to sales manager-->
+    <record id="email_template_sales_manager_remainder" model="mail.template">
+        <field name="name">Approval Remainder</field>
+        <field name="model_id" ref="jaybutani_31072004.model_sale_order"/>
+        <field name="subject">Approval Remainder</field>
+        <field name="email_from">{{ user.email_formatted }}</field>
+        <field name="email_to">{{ object.sale_manager.user_id.email_formatted }}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Dear,
+                    <t t-out="object.sale_manager.user_id.name or ''"/>
+                    <br/>
+                    <p>Casual remainder for
+                        <t t-out="object.name or ''"/>
+                        sale order approval
+                    </p>
+                    <br/>
+                    Thank You.
+                </p>
+            </div>
+        </field>
+    </record>
+</odoo>

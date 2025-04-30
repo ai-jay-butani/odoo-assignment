@@ -1,0 +1,16 @@
+<odoo>
+    <!--sales managers form view-->
+    <record id="sales_manager_view_form" model="ir.ui.view">
+        <field name="name">sales.manager.form.view</field>
+        <field name="model">sales.managers</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="sales_manager_ids"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

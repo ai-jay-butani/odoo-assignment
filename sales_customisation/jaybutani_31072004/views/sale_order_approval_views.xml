@@ -1,0 +1,22 @@
+<odoo>
+    <!--action of approval menu for only pending sale order approval-->
+    <record id="action_sale_order_approvals" model="ir.actions.act_window">
+        <field name="name">Approvals</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_id" ref="sale.view_quotation_tree_with_onboarding"/>
+        <field name="view_mode">list,kanban,form,calendar,pivot,graph,activity</field>
+        <field name="domain">[('state','=','approval')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Generate library Details
+            </p>
+        </field>
+    </record>
+
+    <!--menu of approval under sales-->
+    <menuitem id="menu_sale_order_approval"
+              name="Approvals"
+              sequence="50"
+              parent="sale.sale_menu_root"
+              action="action_sale_order_approvals"/>
+</odoo>
