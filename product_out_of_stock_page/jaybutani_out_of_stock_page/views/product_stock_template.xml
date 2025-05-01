@@ -1,0 +1,24 @@
+<odoo>
+    <data>
+
+        <template id="product_out_of_stock">
+            <t t-call="website.layout">
+                <div class="container">
+                    <div class="mt-2">
+                        <img t-att-src="image_data_uri(product.image_1920)"
+                             alt="..." style="height:180px; width:200px;"/>
+                        <div>
+                            <h5>
+                                <t t-out="product.name"/>
+                            </h5>
+                            <p class="text-danger pt-2">Out of stock</p>
+                            <p>
+                                <t t-if="product.out_of_stock_message" t-out="product.out_of_stock_message"/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+    </data>
+</odoo>
